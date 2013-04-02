@@ -10,13 +10,13 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class LoginServlet
  */
-public class LoginServlet extends HttpServlet {
+public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public RegisterServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -36,20 +36,22 @@ public class LoginServlet extends HttpServlet {
 		
 		try
 		{
-			System.out.println("In the Login Servlet");
+			System.out.println("In the Register Servlet");
 			LoginBean user = new LoginBean();
 			String uname = request.getParameter("uname");
 			String password = request.getParameter("password");
+			String fullName = request.getParameter("fullName");
 			user.setUserName(uname);
 			user.setPassword(password);
-			user = LoginDAO.login(user);
+			user.setFullName(fullName);
+			user = RegisterDAO.register(user);
 			if(user.isValid())
 			{
 				HttpSession session = request.getSession(true);
 				session.setAttribute("currentSessionUser",user);
-				response.sendRedirect("LoginSuccess.jsp");
+				response.sendRedirect("RegisterSuccess.jsp");
 			}else
-				response.sendRedirect("LoginFailed.jsp");
+				response.sendRedirect("RegisterFailed.jsp");
 		} catch (Throwable exc)
 		{
 			System.out.println(exc);

@@ -1,22 +1,24 @@
 package login;
 
-import java.io.*;
+import java.io.IOException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class LoginServlet
+ * Servlet implementation class LogoutServlet
  */
-public class LoginServlet extends HttpServlet {
+@WebServlet("/LogoutServlet")
+public class LogoutServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+       
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public LoginServlet() {
+    public LogoutServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -25,35 +27,18 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+		// TODO Auto-generated method stub
+		HttpSession sess = request.getSession(false);
+	    if (sess != null) {
+	    	sess.invalidate();
+	    }
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// get current session, or initialize one if none
-		
-		try
-		{
-			System.out.println("In the Login Servlet");
-			LoginBean user = new LoginBean();
-			String uname = request.getParameter("uname");
-			String password = request.getParameter("password");
-			user.setUserName(uname);
-			user.setPassword(password);
-			user = LoginDAO.login(user);
-			if(user.isValid())
-			{
-				HttpSession session = request.getSession(true);
-				session.setAttribute("currentSessionUser",user);
-				response.sendRedirect("LoginSuccess.jsp");
-			}else
-				response.sendRedirect("LoginFailed.jsp");
-		} catch (Throwable exc)
-		{
-			System.out.println(exc);
-		}
+		// TODO Auto-generated method stub
 	}
 
 }

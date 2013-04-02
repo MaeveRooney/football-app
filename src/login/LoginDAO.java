@@ -31,7 +31,7 @@ public class LoginDAO {
 			}
 			else if (userExists)
 			{
-				String fullName = rs.getString("full_name");
+				String fullName = rs.getString("fullName");
 				System.out.println("Welcome " + fullName);
 				bean.setFullName(fullName);
 				bean.setValid(true);

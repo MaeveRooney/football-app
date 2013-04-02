@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1256">
 <title>Login Page</title> </head>
 <body>
-<form name="actionForm" action="login" method ="GET">
+<form name="actionForm" action="login" method ="POST">
 <table>
 <tr><td>Enter your Username: </td><td><input type="text" name="uname"/></td></tr>
 <tr><td>Enter your Password: </td><td><input type="password" name="password"/></td></tr>
