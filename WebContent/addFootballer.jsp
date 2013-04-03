@@ -14,7 +14,7 @@ if(null == session.getAttribute("user")){
 	response.sendRedirect("LoginPage.jsp");
 } else if(null != session.getAttribute("name")){
 	String fullname = (String) session.getAttribute("name");
-	out.print("<p>welcome " + fullname + "</p>");
+	out.print("<p>You are logged in as " + fullname + "</p>");
 }
 if(null != session.getAttribute("flashMessage")){   
 	String strExpired = (String) session.getAttribute("flashMessage");

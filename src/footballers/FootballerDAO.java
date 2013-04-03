@@ -84,7 +84,7 @@ public class FootballerDAO {
 		System.out.println("trying to add player to team");
 		
 		//this string does extract the id of team	
-		String queryTeamID="SELECT * from teams WHERE name = " + teamName + " LIMIT 1";
+		String queryTeamID="SELECT * from teams WHERE name = '" + teamName + "' LIMIT 1";
 
 		try
 		{

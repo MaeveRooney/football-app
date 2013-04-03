@@ -26,8 +26,9 @@ if(null != session.getAttribute("flashMessage")){
 %>
 
 <h2><a href="logout">Logout</a></h2>
-<h2><a href="addFootballer.jsp">add player</a></h2>
-<h2><a href="addTeam.jsp">add team</a></h2>
+<h2><a href="addFootballer.jsp">add/remove player</a></h2>
+<h2><a href="addTeam.jsp">add/remove team</a></h2>
+<h2><a href="addLeague.jsp">add/remove league</a></h2>
 
 </body>
 </html>
