@@ -33,6 +33,7 @@ public class RegisterServlet extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// get current session, or initialize one if none
+		HttpSession session = request.getSession(true);
 		
 		try
 		{
@@ -46,12 +47,14 @@ public class RegisterServlet extends HttpServlet {
 			user.setFullName(fullName);
 			user = RegisterDAO.register(user);
 			if(user.isValid())
-			{
-				HttpSession session = request.getSession(true);
-				session.setAttribute("currentSessionUser",user);
-				response.sendRedirect("RegisterSuccess.jsp");
-			}else
-				response.sendRedirect("RegisterFailed.jsp");
+			{			
+				session.setAttribute("user",user);
+				session.setAttribute("flashMessage","registered");
+				response.sendRedirect("dashboard.jsp");
+			}else{
+				session.setAttribute("flashMessage","notregistered");
+				response.sendRedirect("RegisterPage.jsp");
+			}
 		} catch (Throwable exc)
 		{
 			System.out.println(exc);

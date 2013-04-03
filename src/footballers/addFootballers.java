@@ -1,7 +1,6 @@
 package footballers;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,17 +9,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 /**
  * Servlet implementation class addFootballers
  */
 @WebServlet("/addFootballers")
-public class addFootballers extends HttpServlet {
+public class AddFootballers extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public addFootballers() {
+    public AddFootballers() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,20 +29,55 @@ public class addFootballers extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		PrintWriter out = response.getWriter();
-		out.println("<body><h1>");
-		out.println("This Is Success Page");
-		out.println(session.getAttribute("currentSessionUser"));
-		out.println("</h1></body>");
-
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		// get current session, or initialize one if none
+		HttpSession session = request.getSession(true);
+		
+		try
+		{
+			System.out.println("In the add footballer Servlet");
+			PlayerBean player = new PlayerBean();
+			String fullName = request.getParameter("fullName");
+			String shirtNumber = request.getParameter("shirtNumber");
+			String speed = request.getParameter("speed");
+			String strength = request.getParameter("strength");
+			String passing = request.getParameter("passing");
+			String scoring = request.getParameter("scoring");
+			String defense = request.getParameter("defense");
+			String goals = request.getParameter("goals");
+			String team = request.getParameter("team");			
+			player.setFullName(fullName);
+			player.setShirtNumber(shirtNumber);
+			player.setSpeed(speed);
+			player.setStrength(strength);
+			player.setPassing(passing);
+			player.setScoring(scoring);
+			player.setDefense(defense);
+			player.setGoals(goals);
+			player = FootballerDAO.register(player);
+			if(player.isValid())
+			{	
+				int playerID;
+				playerID = player.getID();
+				if ((team.length() > 0) && !(team.equals("no teams in database. please add some teams"))){
+					FootballerDAO.addToTeam(playerID, team);
+				}
+				session.setAttribute("flashMessage","playeradded");
+				session.setAttribute("playerName",player.getFullName());
+				response.sendRedirect("addFootballer.jsp");
+			}else{
+				session.setAttribute("flashMessage","playerfail");
+				response.sendRedirect("addFootballer.jsp");
+			}
+		} catch (Throwable exc)
+		{
+			System.out.println(exc);
+		}
 	}
 	
 

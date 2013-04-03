@@ -1,9 +1,22 @@
 <%@ page language="java" contentType="text/html; charset=windows-1256" pageEncoding="windows-1256" %>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=windows-1256">
-<title>Login Page</title> </head>
+<title>Football Manager - Register</title> </head>
 <body>
+<%
+if(null == session.getAttribute("flashMessage")){  
+	// no session  
+}else{  
+	String strExpired = (String) session.getAttribute("flashMessage");
+	if (strExpired.equals("notregistered")){     
+		out.print("<h3>registration failed. please try again</h3>");
+		// remove flash message
+		session.removeAttribute("flashMessage");
+	}  
+}      
+%>
 <form name="actionForm" action="register" method ="POST">
 <table>
 <tr><td>Enter your Full Name: </td><td><input type="text" name="fullName"/></td></tr>
@@ -13,5 +26,6 @@
 <tr><td colspan="2" align="center"><input type="submit" value="submit"> </td></tr>
 </table>
 </form>
+<h2><a href="LoginPage.jsp">Login</a></h2>
 </body>
 </html>

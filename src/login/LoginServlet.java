@@ -43,13 +43,15 @@ public class LoginServlet extends HttpServlet {
 			user.setUserName(uname);
 			user.setPassword(password);
 			user = LoginDAO.login(user);
+			HttpSession session = request.getSession(true);
 			if(user.isValid())
-			{
-				HttpSession session = request.getSession(true);
-				session.setAttribute("currentSessionUser",user);
-				response.sendRedirect("LoginSuccess.jsp");
+			{				
+				session.setAttribute("user",user);
+				session.setAttribute("name",user.getFullName());
+				response.sendRedirect("dashboard.jsp");
 			}else
-				response.sendRedirect("LoginFailed.jsp");
+				session.setAttribute("flashMessage","loginfail");
+				response.sendRedirect("LoginPage.jsp");
 		} catch (Throwable exc)
 		{
 			System.out.println(exc);

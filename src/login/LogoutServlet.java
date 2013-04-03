@@ -28,10 +28,14 @@ public class LogoutServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("In the Logout Servlet");
 		HttpSession sess = request.getSession(false);
 	    if (sess != null) {
 	    	sess.invalidate();
 	    }
+	    HttpSession session = request.getSession(true);
+	    session.setAttribute("flashMessage","logout");
+		response.sendRedirect("LoginPage.jsp");
 	}
 
 	/**
