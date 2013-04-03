@@ -80,26 +80,15 @@ public class FootballerDAO {
 	}
 	
 	//get team id and add playerid and teamid to team_player table
-	public static void addToTeam(int playerID, String teamName){	
+	public static void addToTeam(int playerID, String team){	
 		System.out.println("trying to add player to team");
-		
-		//this string does extract the id of team	
-		String queryTeamID="SELECT * from teams WHERE name = '" + teamName + "' LIMIT 1";
 
 		try
 		{
-			int teamID = 0;
+			int teamID = Integer.parseInt(team);
 			
 			//connecting to the DB
 			currentCon = ConnectionManager.getConnection();
-			
-			// get highest player id
-			ps = currentCon.prepareStatement(queryTeamID);
-			rs = ps.executeQuery();
-			if (rs.next()){
-				teamID = rs.getInt("id");
-				System.out.println("Team id " + teamID);
-			}
 			
 			//string to insert data into the database;
 			String insertQuery = "insert into team_players (teamID, playerID) values ('" + teamID + "','" + playerID + "')";
@@ -117,5 +106,64 @@ public class FootballerDAO {
 		{
 			System.out.println("Adding player to team failed: An Exception has occurred! " + ex);
 		}
+	}
+	
+	public static Boolean removePlayer(String playerID)
+	{		
+		int id = Integer.parseInt(playerID);
+		System.out.println("id  " + playerID);
+
+		String countEntries = "SELECT COUNT(*) FROM footballers";
+		String deleteQuery = "DELETE from footballers where id = "+id;
+		try
+		{
+			int oldCount = 0;
+			int newCount = 0;
+			
+			//connecting to the DB
+			currentCon = ConnectionManager.getConnection();
+			
+			//query to remove players from teams
+			String removeTeamPlayers = "DELETE from team_players where playerID ="+id;
+			
+			// remove player from team
+			ps = currentCon.prepareStatement(removeTeamPlayers);
+			ps.executeUpdate();
+			
+			// get current number entries
+			ps = currentCon.prepareStatement(countEntries);
+			rs = ps.executeQuery();
+			if (rs.next()){
+				oldCount = rs.getInt(1);
+				System.out.println("Old count" + oldCount);
+			}
+			
+			// delete player from db
+			ps = currentCon.prepareStatement(deleteQuery);
+			ps.executeUpdate();
+
+			// get new number entries
+			ps = currentCon.prepareStatement(countEntries);
+			rs = ps.executeQuery();
+			if (rs.next()){
+				newCount = rs.getInt(1);
+				System.out.println("New count " + newCount);
+			}
+			
+			if (newCount == oldCount-1)
+			{
+				return true;
+			}
+			else
+			{	
+				System.out.println("League not removed");
+				return false;							
+			}
+		}
+		catch (Exception ex)
+		{
+			System.out.println("Removing of league failed: An Exception has occurred! " + ex);
+		}
+		return false;
 	}
 }
