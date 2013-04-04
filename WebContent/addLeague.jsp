@@ -11,6 +11,7 @@
 <%
 if(null == session.getAttribute("user")){   
 	session.setAttribute("flashMessage","mustlogin");
+	session.setAttribute("url","addLeague.jsp");
 	response.sendRedirect("LoginPage.jsp");
 } else if(null != session.getAttribute("name")){
 	String fullname = (String) session.getAttribute("name");

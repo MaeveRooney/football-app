@@ -87,4 +87,33 @@ public class TeamDAO {
 
 		return bean;
 	}
+	
+	public static String getTeamName(int teamID)
+	{				
+		String queryTeams="SELECT name from teams where id="+teamID;
+		String teamName = null;
+
+		try
+		{
+						
+			//connecting to the DB
+			currentCon = ConnectionManager.getConnection();
+			
+			// get highest player id
+			ps = currentCon.prepareStatement(queryTeams);
+			rs = ps.executeQuery();
+			if (rs.next()){
+				teamName = rs.getString("name");
+			}
+			
+						
+
+		}
+		catch (Exception ex)
+		{
+			System.out.println("getting team name failed: An Exception has occurred! " + ex);
+		}
+
+		return teamName;
+	}
 }

@@ -56,4 +56,12 @@
     <servlet-name>AddLeagues</servlet-name>
     <url-pattern>/addLeagues</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>ChooseTeamAndFormation</servlet-name>
+    <servlet-class>formation.ChooseTeamAndFormation</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ChooseTeamAndFormation</servlet-name>
+    <url-pattern>/ChooseTeamAndFormation</url-pattern>
+  </servlet-mapping>
 </web-app>

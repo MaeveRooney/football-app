@@ -9,43 +9,73 @@
 </head>
 <body>
 <%
+int teamID = 0;
+int defense = 0;
+int mid = 0;
+int attack = 0;
+String teamName = "";
 if(null == session.getAttribute("user")){   
 	session.setAttribute("flashMessage","mustlogin");
+	session.setAttribute("url","selectFormation.jsp");
 	response.sendRedirect("LoginPage.jsp");
-} else if(null != session.getAttribute("name")){
-	String fullname = (String) session.getAttribute("name");
-	out.print("welcome " + fullname);
+} else {
+	if(null != session.getAttribute("name")){
+		String fullname = (String) session.getAttribute("name");
+		out.print("welcome " + fullname);
+	}
+	if(null != session.getAttribute("flashMessage")){   
+		String strFlash = (String) session.getAttribute("flashMessage");
+	}
+	if(null == session.getAttribute("teamID")){ 
+		System.out.print("no team id");
+		session.setAttribute("flashMessage","mustSelectTeam");
+		response.sendRedirect("selectFormation.jsp");
+	} else {
+		teamID = (Integer) session.getAttribute("teamID");
+		System.out.print("team id " + teamID);
+	}
+	if(null != session.getAttribute("teamName")){ 
+		teamName = (String) session.getAttribute("teamName");
+		System.out.print("team Name is " + teamName);
+	}
+	if(null != session.getAttribute("defense")){ 
+		defense = (Integer) session.getAttribute("defense");
+		System.out.print("defense int is " + defense);
+	}
+	if(null != session.getAttribute("mid")){ 
+		mid = (Integer) session.getAttribute("mid");
+		System.out.print("mid int is " + mid);
+	} 
+	if(null != session.getAttribute("attack")){ 
+		attack = (Integer) session.getAttribute("attack");
+		System.out.print("attack int is " + attack);
+	} 
 }
-if(null != session.getAttribute("flashMessage")){   
-	String strExpired = (String) session.getAttribute("flashMessage");
-	if (strExpired.equals("notregistered")){     
-		response.sendRedirect("RegisterPage.jsp");
-	} 
-	if (strExpired.equals("registered")){     
-		out.print("<p>registration successfull.</p>");
-		// remove flash message
-		session.removeAttribute("flashMessage");
-	} 
-}      
 %>
 
-<jsp:useBean id="cart" scope="session" class="formation.changeFormation" />
+<jsp:useBean id="footballers" class="footballers.ListFootballers" scope="session"/>
+<jsp:useBean id="selectedTeam" scope="session" class="formation.changeFormation" />
 
-<jsp:setProperty name="cart" property="*" />
+<jsp:setProperty name="selectedTeam" property="*" />
 <%
-    cart.processRequest();
+    selectedTeam.processRequest();
 %>
 
-<%	if (cart.getFootballers().length >0){ %>
+<h2>Working With Team: <% out.print((teamName));%></h2>
+<h3>Formation: defense-<% out.print((defense));%>, midfield-<% out.print((mid));%>, attack-<% out.print((attack));%></h3>
+<h3><a href="selectFormation.jsp">Select new team and/or formation</a></h3>
+
+
+<%	if (selectedTeam.getDefense().length >0){ %>
 
 <br> <h2>Selected Defense:</h2>
 
 <ol>
 <%
-    String[] footballers = cart.getFootballers();
-    for (int i=0; i<footballers.length; i++) {
+    String[] chosenPlayers = selectedTeam.getDefense();
+    for (int i=0; i<chosenPlayers.length; i++) {
 %>
-<li> <% out.print((footballers[i])); %>
+<li> <% out.print((chosenPlayers[i])); %>
 <%
     	}
     }
@@ -57,40 +87,40 @@ if(null != session.getAttribute("flashMessage")){
 
 <form method=POST action=selectPlayers.jsp>
 <BR>
-Please select player to add to defense:
-<br>
-
-<jsp:useBean id="obj2" class="footballers.ListFootballers" scope="session"/>
-<select name="footballer">
-	<% if (cart.getFootballers().length >0){ %>
-	    <c:forEach var="entry" items="${obj2.items}"> 
-	    	<c:set var="valid" value="true"/>  	    	
-	    	<c:forEach var="selected" items="${cart.getFootballers()}"> 
-		    	<c:if test="${selected == entry.value}">	
-		     		<c:set var="valid" value="false"/> 	
-		     	</c:if>	
+<% if (selectedTeam.getDefense().length < defense){ %>
+<p>Please select player to add to defense (<% out.print((defense));%>):</p>
+	<select name="footballer">
+		<% if (selectedTeam.getDefense().length >0){ %>
+		    <c:forEach var="entry" items="${footballers.filterplayers(teamID)}"> 
+		    	<c:set var="valid" value="true"/>  	    	
+		    	<c:forEach var="selected" items="${cart.getFootballers()}"> 
+			    	<c:if test="${selected == entry.value}">	
+			     		<c:set var="valid" value="false"/> 	
+			     	</c:if>	
+		     	</c:forEach>
+		     	<c:if test="${valid == true}">
+			    	<option value="${entry.value}">${entry.value}</option>
+			    </c:if>     	
+		    </c:forEach>
+	    <% }if (selectedTeam.getDefense().length == 0){ %>
+	     	<c:forEach var="entry" items="${footballers.filterplayers(teamID)}">
+	     		<option value="${entry.value}">${entry.value}</option>
 	     	</c:forEach>
-	     	<c:if test="${valid == true}">
-		    	<option value="${entry.value}">${entry.value}</option>
-		    </c:if>     	
-	    </c:forEach>
-    <% }if (cart.getFootballers().length == 0){ %>
-     	<c:forEach var="entry" items="${obj2.items}">
-     		<option value="${entry.value}">${entry.value}</option>
-     	</c:forEach>
-     <%} %>
-</select>
-
+	     <%} %>
+	</select>
+<%} else{
+	out.print("<h3>Defense positions are full. To change lineup remove a defender</h3>");
+}%>
 
 <br> <br>
-<INPUT TYPE=submit name="submit" value="add">
+<INPUT TYPE=submit name="submit" value="add defense">
 </form>
 
 
-<% if (cart.getFootballers().length >0){ %>
+<% if (selectedTeam.getDefense().length >0){ %>
 <form method=POST action=selectPlayers.jsp>
 <BR>
-Please select player to remove from defense:
+Select player to remove from defense:
 <br>
 <select name="footballer">	    	
    	<c:forEach var="selected" items="${cart.getFootballers()}"> 
@@ -98,9 +128,39 @@ Please select player to remove from defense:
    	</c:forEach>   	
 </select>
 <br> <br>
-<INPUT TYPE=submit name="submit" value="remove">
+<INPUT TYPE=submit name="submit" value="remove defense">
 </form>
 <%} %>
 
+<% if (footballers.getPlayerInfoForTeam(teamID).size() >0){ %>
+<h2>All Players On Team</h2>
+<table border="1">
+	<tr>
+		<th>Name</th>
+		<th>ShirtNumber</th>
+		<th>Speed Rating</th>
+		<th>Strength Rating</th>
+		<th>Scoring Ability Rating</th>
+		<th>Passing Rating</th>
+		<th>Defense Rating</th>
+		<th>Goal Keeping Rating</th>
+	</tr>
+	<c:forEach var="footballer" items="${footballers.getPlayerInfoForTeam(teamID)}"> 
+     	<tr>
+     		<td>${footballer['fullName']}</td>
+     		<td>${footballer['shirtNumber']}</td>	
+     		<td>${footballer['speed']}</td>	
+     		<td>${footballer['strength']}</td>	
+     		<td>${footballer['scoring']}</td>	
+     		<td>${footballer['passing']}</td>	
+     		<td>${footballer['defense']}</td>	
+     		<td>${footballer['goals']}</td>	
+     	</tr>	
+   	</c:forEach>  
+</table>
+
+<%} else{%>
+<h2>No players on team. Please add some so you can work on formations</h2>
+<%}%>
 </body>
 </html>
