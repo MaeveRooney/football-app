@@ -29,6 +29,7 @@ if(null != session.getAttribute("flashMessage")){
 <h2><a href="addFootballer.jsp">add/remove player</a></h2>
 <h2><a href="addTeam.jsp">add/remove team</a></h2>
 <h2><a href="addLeague.jsp">add/remove league</a></h2>
+<h2><a href="selectPlayers.jsp">select players for formation</a></h2>
 
 </body>
 </html>
