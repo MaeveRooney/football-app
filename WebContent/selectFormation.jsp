@@ -8,6 +8,7 @@
 <title>Football Manager - Select Team And Formation</title>
 </head>
 <body>
+<c:remove var="selectedTeam" scope="session"/>
 <%
 if(null == session.getAttribute("user")){   
 	session.setAttribute("flashMessage","mustlogin");

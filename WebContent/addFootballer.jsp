@@ -8,6 +8,7 @@
 <title>Football Manager - add footballer</title>
 </head>
 <body>
+<c:remove var="selectedTeam" scope="session"/>
 <%
 if(null == session.getAttribute("user")){   
 	session.setAttribute("flashMessage","mustlogin");

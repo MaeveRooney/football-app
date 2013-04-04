@@ -59,108 +59,328 @@ if(null == session.getAttribute("user")){
 <jsp:setProperty name="selectedTeam" property="*" />
 <%
     selectedTeam.processRequest();
+for(String item : selectedTeam.getAllPlayers() ){
+	   System.out.println("player "+item+"\r\n");
+	}
 %>
 
 <h2>Working With Team: <% out.print((teamName));%></h2>
 <h3>Formation: defense-<% out.print((defense));%>, midfield-<% out.print((mid));%>, attack-<% out.print((attack));%></h3>
 <h3><a href="selectFormation.jsp">Select new team and/or formation</a></h3>
-
-
-<%	if (selectedTeam.getDefense().length >0){ %>
-
-<br> <h2>Selected Defense:</h2>
-
-<ol>
-<%
-    String[] chosenPlayers = selectedTeam.getDefense();
-    for (int i=0; i<chosenPlayers.length; i++) {
-%>
-<li> <% out.print((chosenPlayers[i])); %>
-<%
-    	}
-    }
-%>
-</ol>
-
-
 <hr>
+<!-- 
+*************************************************GOALIE DIV***********************************
+ -->
+<div style="float: left; width: 100%; position: relative;"><!--goalie div-->
+	<%	if (selectedTeam.getGoalie().length >0){ %>
+	
+	<br> <h2>Selected Goalie:</h2>
+	
+	<ul>
+	<%
+	    String[] chosenPlayers = selectedTeam.getGoalie();
+	    for (int i=0; i<chosenPlayers.length; i++) {
+	%>
+	<li> <% out.print((chosenPlayers[i])); %>
+	<%
+	    	}
+	    }
+	%>
+	</ul>
+	
+	<% if (selectedTeam.getGoalie().length == 0){ %>
+		<hr>		
+		<form method=POST action=selectPlayers.jsp>
+		<BR>	
+		<p>Please select Goal Keeper (1 total):</p>
+			<select name="footballer">		
+			    <c:forEach var="entry" items="${footballers.filterPlayers(teamID)}"> 
+			    	<c:set var="valid" value="true"/>  
+			    	<% if (selectedTeam.getAllPlayers().length >0){ %>	    	
+				    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+					    	<c:if test="${selected == entry.value}">	
+					     		<c:set var="valid" value="false"/> 	
+					     	</c:if>	
+				     	</c:forEach>
+			     	<% }%>
+			     	<c:if test="${valid == true}">
+				    	<option value="${entry.value}">${entry.value}</option>
+				    </c:if>     	
+			    </c:forEach>
+			</select>		
+		<br> 
+		<INPUT TYPE=submit name="submit" value="add goalie">
+		</form>
+	<%} else{
+		out.print("<h3>Goalkeep is placed. To change, remove current goalie</h3>");
+	}%>
 
-<form method=POST action=selectPlayers.jsp>
-<BR>
-<% if (selectedTeam.getDefense().length < defense){ %>
-<p>Please select player to add to defense (<% out.print((defense));%>):</p>
-	<select name="footballer">
-		<% if (selectedTeam.getDefense().length >0){ %>
-		    <c:forEach var="entry" items="${footballers.filterplayers(teamID)}"> 
-		    	<c:set var="valid" value="true"/>  	    	
-		    	<c:forEach var="selected" items="${cart.getFootballers()}"> 
-			    	<c:if test="${selected == entry.value}">	
-			     		<c:set var="valid" value="false"/> 	
-			     	</c:if>	
-		     	</c:forEach>
+	
+	
+	<% if (selectedTeam.getGoalie().length >0){ %>
+		<hr>
+		<form method=POST action=selectPlayers.jsp>	
+	   	<c:forEach var="selected" items="${selectedTeam.getGoalie()}"> 
+	   		<input type="hidden" name="footballer" value="${selected}"/>
+	   	</c:forEach>   	
+		<INPUT TYPE=submit name="submit" value="remove goalie">
+		</form>
+		<br>
+	<%} %>
+</div><!-- closing goalie div -->
+<hr>
+<!-- 
+*************************************************DEFENSE DIV***********************************
+ -->
+<div style="float: left; width: 33%;"><!--defense div-->
+	<%	if (selectedTeam.getDefense().length >0){ %>
+	
+	<br> <h2>Selected Defense:</h2>
+	
+	<ol>
+	<%
+	    String[] chosenPlayers = selectedTeam.getDefense();
+	    for (int i=0; i<chosenPlayers.length; i++) {
+	%>
+	<li> <% out.print((chosenPlayers[i])); %>
+	<%
+	    	}
+	    }
+	%>
+	</ol>
+
+	<% if (selectedTeam.getDefense().length < defense){ %>
+		
+		<hr>
+			
+		<form method=POST action=selectPlayers.jsp>
+		<br>	
+		<p>Please select player to add to defense (<% out.print((defense));%> total):</p>
+			<select name="footballer">		
+			    <c:forEach var="entry" items="${footballers.filterPlayers(teamID)}"> 
+			    	<c:set var="valid" value="true"/>  
+			    	<% if (selectedTeam.getAllPlayers().length >0){ 
+			    		%>	    	
+				    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+					    	<c:if test="${selected == entry.value}">	
+					     		<c:set var="valid" value="false"/> 	
+					     	</c:if>	
+				     	</c:forEach>
+			     	<% }%>
+			     	<c:if test="${valid == true}">
+				    	<option value="${entry.value}">${entry.value}</option>
+				    </c:if>     	
+			    </c:forEach>
+			</select>		
+		<br> 
+		<INPUT TYPE=submit name="submit" value="add defense">
+		</form>
+	<%} else{
+		out.print("<h3>Defense positions are full. To change lineup remove a defender</h3>");
+	}%>
+
+	
+	
+	<% if (selectedTeam.getDefense().length >0){ %>
+		<hr>
+		<form method=POST action=selectPlayers.jsp>
+		<BR>
+		Select player to remove from defense:
+		<br>
+		<select name="footballer">	    	
+		   	<c:forEach var="selected" items="${selectedTeam.getDefense()}"> 
+		     		<option value="${selected}">${selected}</option>	
+		   	</c:forEach>   	
+		</select>
+		<br> 
+		<INPUT TYPE=submit name="submit" value="remove defense">
+		</form>
+	<%} %>
+</div><!-- closing defense div -->
+
+<!-- 
+*************************************************MID DIV***********************************
+ -->
+<div style="float: left; width: 33%;"><!--mid div-->
+	<%	if (selectedTeam.getMid().length >0){ %>
+	
+	<br> <h2>Selected Midfield:</h2>
+	
+	<ol>
+	<%
+	    String[] chosenPlayers = selectedTeam.getMid();
+	    for (int i=0; i<chosenPlayers.length; i++) {
+	%>
+	<li> <% out.print((chosenPlayers[i])); %>
+	<%
+	    	}
+	    }
+	%>
+	</ol>
+	
+	<% if (selectedTeam.getMid().length < mid){ %>	
+	<hr>
+	
+	<form method=POST action=selectPlayers.jsp>
+	<BR>
+
+	<p>Please select player to add to midfield (<% out.print((mid));%> total):</p>
+		<select name="footballer">		
+		    <c:forEach var="entry" items="${footballers.filterPlayers(teamID)}"> 
+		    	<c:set var="valid" value="true"/>  
+		    	<% if (selectedTeam.getAllPlayers().length >0){ %>	    	
+			    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+				    	<c:if test="${selected == entry.value}">	
+				     		<c:set var="valid" value="false"/> 	
+				     	</c:if>	
+			     	</c:forEach>
+		     	<% }%>
 		     	<c:if test="${valid == true}">
 			    	<option value="${entry.value}">${entry.value}</option>
 			    </c:if>     	
 		    </c:forEach>
-	    <% }if (selectedTeam.getDefense().length == 0){ %>
-	     	<c:forEach var="entry" items="${footballers.filterplayers(teamID)}">
-	     		<option value="${entry.value}">${entry.value}</option>
-	     	</c:forEach>
-	     <%} %>
-	</select>
-<%} else{
-	out.print("<h3>Defense positions are full. To change lineup remove a defender</h3>");
-}%>
+		</select>
+		
+	<br> 
+	<INPUT TYPE=submit name="submit" value="add midfield">
+	</form>
+	<%} else{
+		out.print("<h3>Midfield positions are full. To change lineup remove a midfielder</h3>");
+	}%>
 
-<br> <br>
-<INPUT TYPE=submit name="submit" value="add defense">
-</form>
+	
+	
+	<% if (selectedTeam.getMid().length >0){ %>
+		<hr>
+		<form method=POST action=selectPlayers.jsp>
+		<BR>
+		Select player to remove from midfield:
+		<br>
+		<select name="footballer">	    	
+		   	<c:forEach var="selected" items="${selectedTeam.getMid()}"> 
+		     		<option value="${selected}">${selected}</option>	
+		   	</c:forEach>   	
+		</select>
+		<br> 
+		<INPUT TYPE=submit name="submit" value="remove midfield">
+		</form>
+	<%} %>
+</div><!-- closing mid div -->
 
+<!-- 
+*************************************************ATTACK	 DIV***********************************
+ -->
+<div style="float: left; width: 33%;"><!--attack div-->
+	<%	if (selectedTeam.getAttack().length >0){ %>
+	
+	<br> <h2>Selected Attack:</h2>
+	
+	<ol>
+	<%
+	    String[] chosenPlayers = selectedTeam.getAttack();
+	    for (int i=0; i<chosenPlayers.length; i++) {
+	%>
+	<li> <% out.print((chosenPlayers[i])); %>
+	<%
+	    	}
+	    }
+	%>
+	</ol>
 
-<% if (selectedTeam.getDefense().length >0){ %>
-<form method=POST action=selectPlayers.jsp>
-<BR>
-Select player to remove from defense:
-<br>
-<select name="footballer">	    	
-   	<c:forEach var="selected" items="${cart.getFootballers()}"> 
-     		<option value="${selected}">${selected}</option>	
-   	</c:forEach>   	
-</select>
-<br> <br>
-<INPUT TYPE=submit name="submit" value="remove defense">
-</form>
+	<% if (selectedTeam.getAttack().length < attack){ %>
+		<hr>
+		
+		<form method=POST action=selectPlayers.jsp>
+		<BR>
+	
+		<p>Please select player to add to attack (<% out.print((attack));%> total):</p>
+			<select name="footballer">		
+			    <c:forEach var="entry" items="${footballers.filterPlayers(teamID)}"> 
+			    	<c:set var="valid" value="true"/>  
+			    	<% if (selectedTeam.getAllPlayers().length >0){ %>	    	
+				    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+					    	<c:if test="${selected == entry.value}">	
+					     		<c:set var="valid" value="false"/> 	
+					     	</c:if>	
+				     	</c:forEach>
+			     	<% }%>
+			     	<c:if test="${valid == true}">
+				    	<option value="${entry.value}">${entry.value}</option>
+				    </c:if>     	
+			    </c:forEach>
+			</select>
+			
+		<br>
+		<INPUT TYPE=submit name="submit" value="add attack">
+		</form>
+	
+	<%} else{
+		out.print("<h3>Attack positions are full. To change lineup remove an attacker</h3>");
+	}%>
+
+	
+	<% if (selectedTeam.getAttack().length >0){ %>
+		<hr>
+		<form method=POST action=selectPlayers.jsp>
+		<BR>
+		Select player to remove from attack:
+		<br>
+		<select name="footballer">	    	
+		   	<c:forEach var="selected" items="${selectedTeam.getAttack()}"> 
+		     		<option value="${selected}">${selected}</option>	
+		   	</c:forEach>   	
+		</select>
+		<br> 
+		<INPUT TYPE=submit name="submit" value="remove attack">
+		</form>
+	<%} %>
+</div><!-- closing attack div -->
+<hr><br><br><br>
+<% if ((selectedTeam.getDefense().length == defense) && (selectedTeam.getMid().length == mid) && (selectedTeam.getAttack().length == attack)){ %>
+	<div style="float: left; width: 100%; position: relative;">
+		<form method=POST action=#>
+			<INPUT style=" font-size:200%; width: 100%; text-align: center; position: absolute;" TYPE=submit name="submit" value="calculate team formation">
+		</form>
+	</div>
 <%} %>
+<br>
+<hr>
+<br>
 
-<% if (footballers.getPlayerInfoForTeam(teamID).size() >0){ %>
-<h2>All Players On Team</h2>
-<table border="1">
-	<tr>
-		<th>Name</th>
-		<th>ShirtNumber</th>
-		<th>Speed Rating</th>
-		<th>Strength Rating</th>
-		<th>Scoring Ability Rating</th>
-		<th>Passing Rating</th>
-		<th>Defense Rating</th>
-		<th>Goal Keeping Rating</th>
-	</tr>
-	<c:forEach var="footballer" items="${footballers.getPlayerInfoForTeam(teamID)}"> 
-     	<tr>
-     		<td>${footballer['fullName']}</td>
-     		<td>${footballer['shirtNumber']}</td>	
-     		<td>${footballer['speed']}</td>	
-     		<td>${footballer['strength']}</td>	
-     		<td>${footballer['scoring']}</td>	
-     		<td>${footballer['passing']}</td>	
-     		<td>${footballer['defense']}</td>	
-     		<td>${footballer['goals']}</td>	
-     	</tr>	
-   	</c:forEach>  
-</table>
-
-<%} else{%>
-<h2>No players on team. Please add some so you can work on formations</h2>
-<%}%>
+<!-- 
+*************************************************PLAYER TABLE DIV***********************************
+ -->
+<div style="float: left; width: 100%;">	<!-- player table div -->
+	<% if (footballers.getPlayerInfoForTeam(teamID).size() >0){ %>
+	<h2>All Players On Team</h2>
+	<table border="1">
+		<tr>
+			<th>Name</th>
+			<th>ShirtNumber</th>
+			<th>Speed Rating</th>
+			<th>Strength Rating</th>
+			<th>Scoring Ability Rating</th>
+			<th>Passing Rating</th>
+			<th>Defense Rating</th>
+			<th>Goal Keeping Rating</th>
+		</tr>
+		<c:forEach var="footballer" items="${footballers.getPlayerInfoForTeam(teamID)}"> 
+	     	<tr>
+	     		<td>${footballer['fullName']}</td>
+	     		<td>${footballer['shirtNumber']}</td>	
+	     		<td>${footballer['speed']}</td>	
+	     		<td>${footballer['strength']}</td>	
+	     		<td>${footballer['scoring']}</td>	
+	     		<td>${footballer['passing']}</td>	
+	     		<td>${footballer['defense']}</td>	
+	     		<td>${footballer['goals']}</td>	
+	     	</tr>	
+	   	</c:forEach>  
+	</table>
+	
+	<%} else{%>
+	<h2>No players on team. Please add some so you can work on formations</h2>
+	<%}%>
+</div><!-- closing player table div -->
 </body>
 </html>

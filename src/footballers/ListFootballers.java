@@ -29,7 +29,6 @@ public class ListFootballers {
 			stmt=currentCon.createStatement();
 			rs = stmt.executeQuery(searchQuery);
 			if (rs.isBeforeFirst() ) { 
-				map.put(new Integer(0),"");
 				while(rs.next()){
 					map.put(new Integer(rs.getInt("id")), rs.getString("full_name"));
 				}
@@ -64,7 +63,6 @@ public class ListFootballers {
 			stmt=currentCon.createStatement();
 			rs = stmt.executeQuery(searchQuery);
 			if (rs.isBeforeFirst() ) { 
-				map.put(new Integer(0),"");
 				while(rs.next()){
 					map.put(new Integer(rs.getInt("id")), rs.getString("full_name"));
 				}
