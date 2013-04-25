@@ -11,14 +11,14 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class ChooseTeamAndFormation
  */
-@WebServlet("/ChooseTeamAndFormation")
-public class ChooseTeamAndFormation extends HttpServlet {
+@WebServlet("/ChooseFormation")
+public class ChooseFormation extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ChooseTeamAndFormation() {
+    public ChooseFormation() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -38,20 +38,14 @@ public class ChooseTeamAndFormation extends HttpServlet {
 		HttpSession session = request.getSession(true);		
 		try
 		{
-			System.out.println("In the choose team and formation Servlet");
-			String teamID = request.getParameter("teamID");
-			int id = Integer.parseInt(teamID);
-			String teamName = teams.TeamDAO.getTeamName(id);
-			System.out.print(teamName);
+			System.out.println("In the choose formation Servlet");
 			String formation = request.getParameter("formation");
 			String delims = "[,]";
 			String[] positions = formation.split(delims);
-			session.setAttribute("teamID",id);
-			session.setAttribute("teamName",teamName);
 			session.setAttribute("defense", Integer.parseInt(positions[0]));
 			session.setAttribute("mid", Integer.parseInt(positions[1]));
 			session.setAttribute("attack", Integer.parseInt(positions[2]));
-			response.sendRedirect("selectPlayers.jsp");
+			response.sendRedirect("playerTable.jsp");
 
 		} catch (Throwable exc)
 		{

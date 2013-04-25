@@ -1,22 +1,27 @@
 package formation;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 import org.apache.commons.lang3.*;
 
 public class changeFormation {
+	Map<String, String> defenseMap = new HashMap<String, String>();
     Vector<String> defenseVector = new Vector<String>();
     Vector<String> midVector = new Vector<String>();
     Vector<String> attackVector = new Vector<String>();
     Vector<String> goalieVector = new Vector<String>();
     String submit = null;
     String footballer = null;
+    String formName = null;
+    String position = null;
 
-    private void addDefense(String name) {
-        defenseVector.addElement(name);
+    private void addDefense(String position, String name) {
+        defenseMap.put(position, name);
     }
 
-    private void removeDefense(String name) {
-        defenseVector.removeElement(name);
+    private void removeDefense(String pos) {
+        defenseMap.remove(pos);
     }
     
     private void addMid(String name) {
@@ -46,15 +51,21 @@ public class changeFormation {
     public void setFootballer(String name) {
     	footballer = name;
     }
+    
+    public void setPosition(String name) {
+    	position = name;
+    }
+    
+    public void setFormName(String name) {
+    	formName = name;
+    }
 
     public void setSubmit(String s) {
         submit = s;
     }
 
-    public String[] getDefense() {
-        String[] s = new String[defenseVector.size()];
-        defenseVector.copyInto(s);
-        return s;
+    public Map<String, String> getDefense() {
+        return defenseMap;
     }
 
     public String[] getMid() {
@@ -75,77 +86,37 @@ public class changeFormation {
         return s;
     }
     
-    public String[] getAllPlayers() {
-    	/**String[] s = null;
-    	if (getGoalie().length>0){
-    		s = new String[goalieVector.size()];
-    	}
-    	if (getDefense().length>0){
-    		if (s != null){
-    			String[] both = ArrayUtils.addAll(s, getDefense());
-    			s = both;   			
-    		} else{
-    			s = new String[defenseVector.size()];
-    		}
-    	}
-    	if (getMid().length>0){
-    		if (s != null){
-    			String[] both = ArrayUtils.addAll(s, getMid());
-    			s = both;   			
-    		} else{
-    			s = new String[midVector.size()];
-    		}
-    	}
-    	if (getAttack().length>0){
-    		if (s != null){
-    			String[] both = ArrayUtils.addAll(s, getAttack());
-    			s = both;   			
-    		} else{
-    			s = new String[attackVector.size()];
-    		}
-    	}
-        System.out.print("player list\r\n");
-        if (s != null){
-        	for (int i=0;i<s.length;i++){
-        		System.out.print(s[i]+"\r\n");
-        	}
-        }
-        return s;**/
-    	
+    public Map<String, String> getAllPlayers() {
     	String[] goalie = getGoalie();
-    	String[] defense = getDefense();
+    	//String[] defense = getDefense();
     	String[] mid = getMid();
     	String[] attack = getAttack();
-    	String[] both = ArrayUtils.addAll(goalie, defense);
+    	//String[] both = ArrayUtils.addAll(goalie, defense);
     	String[] both2 = ArrayUtils.addAll(mid, attack);
-    	String[] all = ArrayUtils.addAll(both, both2);
-    	if (all != null){
-        	for (int i=0;i<all.length;i++){
-        		System.out.print(all[i]+"\r\n");
-        	}
-        }
-        return all;
+    	//String[] all = ArrayUtils.addAll(both, both2);
+        return defenseMap;
     }
     
     public void processRequest() {
     	System.out.print(" footballer is "+ footballer+"\r\n");
+    	System.out.print(" form is "+ formName+"\r\n");
         // "add" or "remove"
     	if (footballer != null){
-	        if (submit.equals("add defense"))
-	            addDefense(footballer);
-	        else if (submit.equals("remove defense"))
+	        if (formName.equals("add defense"))
+	            addDefense(position, footballer);
+	        else if (formName.equals("remove defense"))
 	            removeDefense(footballer);
-	        else if (submit.equals("add midfield"))
+	        else if (formName.equals("add midfield"))
 	            addMid(footballer);
-	        else if (submit.equals("remove midfield"))
+	        else if (formName.equals("remove midfield"))
 	            removeMid(footballer);
-	        else if (submit.equals("add attack"))
+	        else if (formName.equals("add attack"))
 	            addAttack(footballer);
-	        else if (submit.equals("remove attack"))
+	        else if (formName.equals("remove attack"))
 	            removeAttack(footballer);
-	        else if (submit.equals("add goalie"))
+	        else if (formName.equals("add goalie"))
 	            addGoalie(footballer);
-	        else if (submit.equals("remove goalie"))
+	        else if (formName.equals("remove goalie"))
 	            removeGoalie(footballer);
 	        // reset at the end of the request
     	}
@@ -154,6 +125,7 @@ public class changeFormation {
 
     // reset
     private void reset() {
+    	formName = null;
         submit = null;
         footballer = null;
     }

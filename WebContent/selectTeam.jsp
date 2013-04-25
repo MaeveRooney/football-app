@@ -25,26 +25,18 @@ if(null != session.getAttribute("flashMessage")){
 	}
 }
 %>
-<h3>Team: <% out.print(session.getAttribute("teamName")); %></h3>
-<h2>Choose Formation</h2>
-<form name="actionForm" action="ChooseFormation" method ="POST">
+<h2>Choose Team</h2>
+<form name="actionForm" action="ChooseTeam" method ="POST">
 <table>
-<tr><td>Select Formation: </td>
+<tr><td>Select Team: </td>
 <td>
-	<select name="formation">
-	     <option value="3,4,3">3,4,3</option>
-	     <option value="4,3,3">4,3,3</option>
-	     <option value="3,3,4">3,3,4</option>
-	     <option value="4,4,2">4,4,2</option>
-	     <option value="2,4,4">2,4,4</option>
-	     <option value="4,2,4">4,2,4</option>
-	     <option value="5,3,2">5,3,2</option>
-	     <option value="5,2,3">5,2,3</option>
-	     <option value="2,5,3">2,5,3</option>
-	     <option value="3,5,3">3,5,2</option>
-	     <option value="2,3,5">2,3,5</option>
-	     <option value="3,2,5">3,2,5</option>
-	</select></td><td>Defense, Midfield, Attack</td></tr>																															
+	<jsp:useBean id="obj" class="teams.ListTeams" scope="page"/>
+	<select name="teamID">
+	    <c:forEach var="entry" items="${obj.items}">
+	     <option value="${entry.key}">${entry.value}</option>
+	    </c:forEach>
+	</select></td></tr>	
+																														
 <tr><td colspan="2" align="center"><input type="submit" value="submit"> </td></tr>
 </table>
 </form>

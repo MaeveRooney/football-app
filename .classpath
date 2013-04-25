@@ -1,23 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/Java SE 7 (MacOS X Default)">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/JVM 1.4">
 		<attributes>
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
 		<attributes>
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-lang3-3.1-javadoc.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-lang3-3.1-sources.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-lang3-3.1-tests.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/commons-lang3-3.1.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jstl-1.2.jar"/>
-	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/mysql-connector-java-5.1.18-bin.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/org.apache.commons.el_1.0.0.v200706111724.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/org.apache.commons.logging_1.0.4.v200706111724.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/org.apache.jasper_5.5.17.v200706111724.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/org.apache.lucene_1.9.1.v200706111724.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/org.apache.lucene.analysis_1.9.1.v200706181610.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/org.apache.xerces_2.8.0.v200705301630.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/org.apache.xml.resolver_1.1.0.v200705310020.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/commons-lang3-3.1-javadoc.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/commons-lang3-3.1-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/commons-lang3-3.1-tests.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/commons-lang3-3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/Applications/eclipse android/plugins/jstl.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
