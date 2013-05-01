@@ -80,4 +80,12 @@
     <servlet-name>SelectPlayers</servlet-name>
     <url-pattern>/SelectPlayers</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>CalculateTeam</servlet-name>
+    <servlet-class>formation.CalculateTeam</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>CalculateTeam</servlet-name>
+    <url-pattern>/CalculateTeam</url-pattern>
+  </servlet-mapping>
 </web-app>

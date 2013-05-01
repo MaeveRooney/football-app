@@ -1,7 +1,9 @@
 package formation;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
@@ -119,32 +121,77 @@ public class ChangeFormation {
     }
     
     public void processRequest() {
-    	System.out.print(" footballer is "+ footballer+"\r\n");
+    	System.out.print("\r\n footballer is "+ footballer+"\r\n");
     	System.out.print(" form is "+ formName+"\r\n");
         // "add" or "remove"
-    	if (footballer != null){
-	        if (formName.equals("add defense"))
-	            addDefense(position, footballer);	        
-	        else if (formName.equals("add midfield"))
-	            addMid(position, footballer);
-	        else if (formName.equals("add attack"))
-	            addAttack(position, footballer);        
-	        else if (formName.equals("add goalie"))
-	            addGoalie(position, footballer);	        
-	        // reset at the end of the request
-    	} else if (position != null){
+    	List <String> list = Arrays.asList(getAllPlayers());  
+    	if (!list.contains(footballer)) {   
+	    	if (footballer != null && footballer != ""){
+		        if (formName.equals("add defense"))
+		            addDefense(position, footballer);	        
+		        else if (formName.equals("add mid"))
+		            addMid(position, footballer);
+		        else if (formName.equals("add attack"))
+		            addAttack(position, footballer);        
+		        else if (formName.equals("add goalie"))
+		            addGoalie(position, footballer);	        
+		        // reset at the end of the request
+	    	}
+    	} if (footballer == null && position != null){
     		if (formName.equals("remove goalie"))
 	            removeGoalie(position);
     		else if (formName.equals("remove attack"))
 	            removeAttack(position);
     		else if (formName.equals("remove defense"))
 	            removeDefense(position);
-	        else if (formName.equals("remove midfield"))
+	        else if (formName.equals("remove mid"))
 	            removeMid(position);    		
     	}
         reset();
+        for (int i = 0; i < getAllPlayers().length; i ++){
+        	System.out.print("player "+ getAllPlayers()[i]+"\r\n");
+        }
     }
-
+    
+    public void addFootballer(String form, String pos, String player) {
+    	System.out.print("\r\n footballer is "+ player+"\r\n");
+    	System.out.print(" form is "+ form+"\r\n");
+        // "add" or "remove"
+    	if (player != null){
+	        if (form.equals("add defense"))
+	            addDefense(pos, player);	        
+	        else if (form.equals("add midfield"))
+	            addMid(pos, player);
+	        else if (form.equals("add attack"))
+	            addAttack(pos, player);        
+	        else if (form.equals("add goalie"))
+	            addGoalie(pos, player);	        
+	        // reset at the end of the request
+    	}
+        reset();
+        for (int i = 0; i < getAllPlayers().length; i ++){
+        	System.out.print("player "+ getAllPlayers()[i]+"\r\n");
+        }
+    }
+    
+    public void removeFootballer(String form, String pos) {
+    	System.out.print(" form is "+ form+"\r\n");
+        // "add" or "remove"
+    	if (pos != null){
+    		if (form.equals("remove goalie"))
+	            removeGoalie(pos);
+    		else if (form.equals("remove attack"))
+	            removeAttack(pos);
+    		else if (form.equals("remove defense"))
+	            removeDefense(pos);
+	        else if (form.equals("remove midfield"))
+	            removeMid(pos);    		
+    	}
+        reset();
+        for (int i = 0; i < getAllPlayers().length; i ++){
+        	System.out.print("player "+ getAllPlayers()[i]+"\r\n");
+        }
+    }
     // reset
     private void reset() {
     	formName = null;

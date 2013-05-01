@@ -77,7 +77,47 @@ if(null == session.getAttribute("user")){
 <!-- 
 *************************************************GOALIE ROW***********************************
  -->
-		<tr><th>Goal Keeper</th></tr>
+		<tr><th>Goal Keeper</th>
+			<td> Goalie rating = goals + speed + strength</td>
+			<%
+			    Map<String, String> chosenGoalie = selectedTeam.getGoalie();
+			    if (chosenGoalie.size() == 1){ %>
+					<td>
+						<% out.print(chosenGoalie.get("one")); %>
+						<form method=POST action=playerTable.jsp>
+							<input type="hidden" name="formName" value="remove goalie"/>
+							<input type="hidden" name="position" value="one"/>
+							<input type="submit" value="remove"/>
+						</form>
+					</td>
+			<%
+				} else {%>
+		    		<td>
+						<form method=POST action=playerTable.jsp>
+							<input type="hidden" name="formName" value="add goalie"/>
+							<input type="hidden" name="position" value="one"/>
+							<select name="footballer" onchange="this.form.submit()">		
+							    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"goalie")}'> 
+							    	<c:set var="valid" value="true"/>  
+							    	<% if (allSelectedPlayers.length >0){ 
+							    		%>	    	
+								    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+									    	<c:if test="${selected == entry.key}">	
+									     		<c:set var="valid" value="false"/> 	
+									     	</c:if>	
+								     	</c:forEach>
+							     	<% }%>
+							     	<c:if test="${valid == true}">
+								    	<option value="${entry.key}">${entry.value}</option>
+								    </c:if>     	
+							    </c:forEach>
+							</select>
+						</form>
+					</td>		    	
+		    	<%} %>
+		
+		
+		</tr>
 		
 <!-- 
 *************************************************DEFENSE ROW***********************************
@@ -86,11 +126,11 @@ if(null == session.getAttribute("user")){
 			<th>Defense</th><td> Defense rating = defense + speed + strength</td>
 			<%
 			    Map<String, String> chosenDefense = selectedTeam.getDefense();
-			    String positionOne = chosenDefense.get("one");
-			    String positionTwo = chosenDefense.get("two");
-			    if (positionOne != null){ %>
+			    String defensePositionOne = chosenDefense.get("one");
+			    String defensePositionTwo = chosenDefense.get("two");
+			    if (defensePositionOne != null){ %>
 					<td>
-						<% out.print(positionOne); %>
+						<% out.print(defensePositionOne); %>
 						<form method=POST action=playerTable.jsp>
 							<input type="hidden" name="formName" value="remove defense"/>
 							<input type="hidden" name="position" value="one"/>
@@ -104,11 +144,11 @@ if(null == session.getAttribute("user")){
 							<input type="hidden" name="formName" value="add defense"/>
 							<input type="hidden" name="position" value="one"/>
 							<select name="footballer" onchange="this.form.submit()">		
-							    <c:forEach var="entry" items='${defenseMap}'> 
+							    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"defense")}'> 
 							    	<c:set var="valid" value="true"/>  
 							    	<% if (allSelectedPlayers.length >0){ 
 							    		%>	    	
-								    	<c:forEach var="selected" items="${allSelectedPlayers}"> 
+								    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
 									    	<c:if test="${selected == entry.key}">	
 									     		<c:set var="valid" value="false"/> 	
 									     	</c:if>	
@@ -122,9 +162,9 @@ if(null == session.getAttribute("user")){
 						</form>
 					</td>		    	
 		    	<%} 
-			    if (positionTwo != null){ %>
+			    if (defensePositionTwo != null){ %>
 					<td>
-						<% out.print(positionTwo); %>
+						<% out.print(defensePositionTwo); %>
 						<form method=POST action=playerTable.jsp>
 							<input type="hidden" name="formName" value="remove defense"/>
 							<input type="hidden" name="position" value="two"/>
@@ -139,11 +179,11 @@ if(null == session.getAttribute("user")){
 							<input type="hidden" name="formName" value="add defense"/>
 							<input type="hidden" name="position" value="two"/>
 							<select name="footballer" onchange="this.form.submit()">		
-							    <c:forEach var="entry" items='${defenseMap}'> 
+							    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"defense")}'> 
 							    	<c:set var="valid" value="true"/>  
 							    	<% if (allSelectedPlayers.length >0){ 
 							    		%>	    	
-								    	<c:forEach var="selected" items="${allSelectedPlayers}"> 
+								    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
 									    	<c:if test="${selected == entry.key}">	
 									     		<c:set var="valid" value="false"/> 	
 									     	</c:if>	
@@ -156,60 +196,507 @@ if(null == session.getAttribute("user")){
 							</select>
 						</form>
 					</td>		    	
-		    	<%}%>
+		    	<%}
+		    	if (defense > 2) {
+				    String defensePositionThree = chosenDefense.get("three");
+				    if (defensePositionThree != null){ %>
+						<td>
+							<% out.print(defensePositionThree); %>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="remove defense"/>
+								<input type="hidden" name="position" value="three"/>
+								<input type="submit" value="remove"/>
+							</form>
+						</td>
+					<%
+					} else {%>
+			    		<td>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="add defense"/>
+								<input type="hidden" name="position" value="three"/>
+								<select name="footballer" onchange="this.form.submit()">		
+								    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"defense")}'> 
+								    	<c:set var="valid" value="true"/>  
+								    	<% if (allSelectedPlayers.length >0){ 
+								    		%>	    	
+									    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+										    	<c:if test="${selected == entry.key}">	
+										     		<c:set var="valid" value="false"/> 	
+										     	</c:if>	
+									     	</c:forEach>
+								     	<% }%>
+								     	<c:if test="${valid == true}">
+									    	<option value="${entry.key}">${entry.value}</option>
+									    </c:if>     	
+								    </c:forEach>
+								</select>
+							</form>
+						</td>		    	
+			    	<%}	    	
+		    	}
+		    	if (defense > 3) {
+		    		String defensePositionFour = chosenDefense.get("four");
+				    if (defensePositionFour != null){ %>
+						<td>
+							<% out.print(defensePositionFour); %>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="remove defense"/>
+								<input type="hidden" name="position" value="four"/>
+								<input type="submit" value="remove"/>
+							</form>
+						</td>
+					<%
+					} else {%>
+			    		<td>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="add defense"/>
+								<input type="hidden" name="position" value="four"/>
+								<select name="footballer" onchange="this.form.submit()">		
+								    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"defense")}'> 
+								    	<c:set var="valid" value="true"/>  
+								    	<% if (allSelectedPlayers.length >0){ 
+								    		%>	    	
+									    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+										    	<c:if test="${selected == entry.key}">	
+										     		<c:set var="valid" value="false"/> 	
+										     	</c:if>	
+									     	</c:forEach>
+								     	<% }%>
+								     	<c:if test="${valid == true}">
+									    	<option value="${entry.key}">${entry.value}</option>
+									    </c:if>     	
+								    </c:forEach>
+								</select>
+							</form>
+						</td>		    	
+			    	<%}
+		    	
+		    	}
+		    	if (defense > 4) {
+		    		String defensePositionFive = chosenDefense.get("five");
+				    if (defensePositionFive != null){ %>
+						<td>
+							<% out.print(defensePositionFive); %>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="remove defense"/>
+								<input type="hidden" name="position" value="five"/>
+								<input type="submit" value="remove"/>
+							</form>
+						</td>
+					<%
+					} else {%>
+			    		<td>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="add defense"/>
+								<input type="hidden" name="position" value="five"/>
+								<select name="footballer" onchange="this.form.submit()">		
+								    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"defense")}'> 
+								    	<c:set var="valid" value="true"/>  
+								    	<% if (allSelectedPlayers.length >0){ 
+								    		%>	    	
+									    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+										    	<c:if test="${selected == entry.key}">	
+										     		<c:set var="valid" value="false"/> 	
+										     	</c:if>	
+									     	</c:forEach>
+								     	<% }%>
+								     	<c:if test="${valid == true}">
+									    	<option value="${entry.key}">${entry.value}</option>
+									    </c:if>     	
+								    </c:forEach>
+								</select>
+							</form>
+						</td>		    	
+			    	<%}
+		    	
+		    	} %>
 			
 		<tr/>
 <!-- 
 *************************************************MIDFIELD ROW***********************************
  -->
 		<tr>
-			<th>Midfield</th>
-			<% for (int i = 0; i < mid; i ++){ %>
-				<td>
-					<select name="footballer">		
-					    <c:forEach var="entry" items='${footballers.filterPlayers(teamID, "mid")}'> 
-					    	<c:set var="valid" value="true"/>  
-					    	<% if (allSelectedPlayers.length >0){ 
-					    		%>	    	
-						    	<c:forEach var="selected" items="${allSelectedPlayers}"> 
-							    	<c:if test="${selected == entry.key}">	
-							     		<c:set var="valid" value="false"/> 	
-							     	</c:if>	
-						     	</c:forEach>
-					     	<% }%>
-					     	<c:if test="${valid == true}">
-						    	<option value="${entry.key}">${entry.value}</option>
-						    </c:if>     	
-					    </c:forEach>
-					</select>
-				</td>
-			<%} %>
+			<th>Midfield</th><td> Midfield rating = passing + speed + strength</td>
+			<%
+			    Map<String, String> chosenMid = selectedTeam.getMid();
+			    String midPositionOne = chosenMid.get("one");
+			    String midPositionTwo = chosenMid.get("two");
+			    if (midPositionOne != null){ %>
+					<td>
+						<% out.print(midPositionOne); %>
+						<form method=POST action=playerTable.jsp>
+							<input type="hidden" name="formName" value="remove mid"/>
+							<input type="hidden" name="position" value="one"/>
+							<input type="submit" value="remove"/>
+						</form>
+					</td>
+			<%
+				} else {%>
+		    		<td>
+						<form method=POST action=playerTable.jsp>
+							<input type="hidden" name="formName" value="add mid"/>
+							<input type="hidden" name="position" value="one"/>
+							<select name="footballer" onchange="this.form.submit()">		
+							    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"mid")}'> 
+							    	<c:set var="valid" value="true"/>  
+							    	<% if (allSelectedPlayers.length >0){ 
+							    		%>	    	
+								    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+									    	<c:if test="${selected == entry.key}">	
+									     		<c:set var="valid" value="false"/> 	
+									     	</c:if>	
+								     	</c:forEach>
+							     	<% }%>
+							     	<c:if test="${valid == true}">
+								    	<option value="${entry.key}">${entry.value}</option>
+								    </c:if>     	
+							    </c:forEach>
+							</select>
+						</form>
+					</td>		    	
+		    	<%} 
+			    if (midPositionTwo != null){ %>
+					<td>
+						<% out.print(midPositionTwo); %>
+						<form method=POST action=playerTable.jsp>
+							<input type="hidden" name="formName" value="remove mid"/>
+							<input type="hidden" name="position" value="two"/>
+							<input type="submit" value="remove"/>
+						</form>
+					</td>
+					
+			<%
+				} else {%>
+		    		<td>
+						<form method=POST action=playerTable.jsp>
+							<input type="hidden" name="formName" value="add mid"/>
+							<input type="hidden" name="position" value="two"/>
+							<select name="footballer" onchange="this.form.submit()">		
+							    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"mid")}'> 
+							    	<c:set var="valid" value="true"/>  
+							    	<% if (allSelectedPlayers.length >0){ 
+							    		%>	    	
+								    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+									    	<c:if test="${selected == entry.key}">	
+									     		<c:set var="valid" value="false"/> 	
+									     	</c:if>	
+								     	</c:forEach>
+							     	<% }%>
+							     	<c:if test="${valid == true}">
+								    	<option value="${entry.key}">${entry.value}</option>
+								    </c:if>     	
+							    </c:forEach>
+							</select>
+						</form>
+					</td>		    	
+		    	<%}
+		    	if (mid > 2) {
+				    String midPositionThree = chosenMid.get("three");
+				    if (midPositionThree != null){ %>
+						<td>
+							<% out.print(midPositionThree); %>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="remove mid"/>
+								<input type="hidden" name="position" value="three"/>
+								<input type="submit" value="remove"/>
+							</form>
+						</td>
+					<%
+					} else {%>
+			    		<td>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="add mid"/>
+								<input type="hidden" name="position" value="three"/>
+								<select name="footballer" onchange="this.form.submit()">		
+								    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"mid")}'> 
+								    	<c:set var="valid" value="true"/>  
+								    	<% if (allSelectedPlayers.length >0){ 
+								    		%>	    	
+									    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+										    	<c:if test="${selected == entry.key}">	
+										     		<c:set var="valid" value="false"/> 	
+										     	</c:if>	
+									     	</c:forEach>
+								     	<% }%>
+								     	<c:if test="${valid == true}">
+									    	<option value="${entry.key}">${entry.value}</option>
+									    </c:if>     	
+								    </c:forEach>
+								</select>
+							</form>
+						</td>		    	
+			    	<%}	    	
+		    	}
+		    	if (mid > 3) {
+		    		String midPositionFour = chosenMid.get("four");
+				    if (midPositionFour != null){ %>
+						<td>
+							<% out.print(midPositionFour); %>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="remove mid"/>
+								<input type="hidden" name="position" value="four"/>
+								<input type="submit" value="remove"/>
+							</form>
+						</td>
+					<%
+					} else {%>
+			    		<td>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="add mid"/>
+								<input type="hidden" name="position" value="four"/>
+								<select name="footballer" onchange="this.form.submit()">		
+								    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"mid")}'> 
+								    	<c:set var="valid" value="true"/>  
+								    	<% if (allSelectedPlayers.length >0){ 
+								    		%>	    	
+									    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+										    	<c:if test="${selected == entry.key}">	
+										     		<c:set var="valid" value="false"/> 	
+										     	</c:if>	
+									     	</c:forEach>
+								     	<% }%>
+								     	<c:if test="${valid == true}">
+									    	<option value="${entry.key}">${entry.value}</option>
+									    </c:if>     	
+								    </c:forEach>
+								</select>
+							</form>
+						</td>		    	
+			    	<%}
+		    	
+		    	}
+		    	if (mid > 4) {
+		    		String midPositionFive = chosenMid.get("five");
+				    if (midPositionFive != null){ %>
+						<td>
+							<% out.print(midPositionFive); %>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="remove mid"/>
+								<input type="hidden" name="position" value="five"/>
+								<input type="submit" value="remove"/>
+							</form>
+						</td>
+					<%
+					} else {%>
+			    		<td>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="add mid"/>
+								<input type="hidden" name="position" value="five"/>
+								<select name="footballer" onchange="this.form.submit()">		
+								    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"mid")}'> 
+								    	<c:set var="valid" value="true"/>  
+								    	<% if (allSelectedPlayers.length >0){ 
+								    		%>	    	
+									    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+										    	<c:if test="${selected == entry.key}">	
+										     		<c:set var="valid" value="false"/> 	
+										     	</c:if>	
+									     	</c:forEach>
+								     	<% }%>
+								     	<c:if test="${valid == true}">
+									    	<option value="${entry.key}">${entry.value}</option>
+									    </c:if>     	
+								    </c:forEach>
+								</select>
+							</form>
+						</td>		    	
+			    	<%}
+		    	
+		    	} %>
+			
 		<tr/>
 <!-- 
 *************************************************ATTACK ROW***********************************
  -->
 		<tr>
-			<th>Attack</th>
-			<% for (int i = 0; i < attack; i ++){ %>
-				<td>
-					<select name="footballer">		
-					    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"attack")}'> 
-					    	<c:set var="valid" value="true"/>  
-					    	<% if (selectedTeam.getAllPlayers().length >0){ 
-					    		%>	    	
-						    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
-							    	<c:if test="${selected == entry.key}">	
-							     		<c:set var="valid" value="false"/> 	
-							     	</c:if>	
-						     	</c:forEach>
-					     	<% }%>
-					     	<c:if test="${valid == true}">
-						    	<option value="${entry.key}">${entry.value}</option>
-						    </c:if>     	
-					    </c:forEach>
-					</select>
-				</td>
-			<%} %>
+			<th>Attack</th><td> Attack rating = scoring + speed + strength</td>
+			<%
+			    Map<String, String> chosenAttack = selectedTeam.getAttack();
+			    String attackPositionOne = chosenAttack.get("one");
+			    String attackPositionTwo = chosenAttack.get("two");
+			    if (defensePositionOne != null){ %>
+					<td>
+						<% out.print(attackPositionOne); %>
+						<form method=POST action=playerTable.jsp>
+							<input type="hidden" name="formName" value="remove attack"/>
+							<input type="hidden" name="position" value="one"/>
+							<input type="submit" value="remove"/>
+						</form>
+					</td>
+			<%
+				} else {%>
+		    		<td>
+						<form method=POST action=playerTable.jsp>
+							<input type="hidden" name="formName" value="add attack"/>
+							<input type="hidden" name="position" value="one"/>
+							<select name="footballer" onchange="this.form.submit()">		
+							    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"attack")}'> 
+							    	<c:set var="valid" value="true"/>  
+							    	<% if (allSelectedPlayers.length >0){ 
+							    		%>	    	
+								    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+									    	<c:if test="${selected == entry.key}">	
+									     		<c:set var="valid" value="false"/> 	
+									     	</c:if>	
+								     	</c:forEach>
+							     	<% }%>
+							     	<c:if test="${valid == true}">
+								    	<option value="${entry.key}">${entry.value}</option>
+								    </c:if>     	
+							    </c:forEach>
+							</select>
+						</form>
+					</td>		    	
+		    	<%} 
+			    if (attackPositionTwo != null){ %>
+					<td>
+						<% out.print(attackPositionTwo); %>
+						<form method=POST action=playerTable.jsp>
+							<input type="hidden" name="formName" value="remove attack"/>
+							<input type="hidden" name="position" value="two"/>
+							<input type="submit" value="remove"/>
+						</form>
+					</td>
+					
+			<%
+				} else {%>
+		    		<td>
+						<form method=POST action=playerTable.jsp>
+							<input type="hidden" name="formName" value="add attack"/>
+							<input type="hidden" name="position" value="two"/>
+							<select name="footballer" onchange="this.form.submit()">		
+							    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"attack")}'> 
+							    	<c:set var="valid" value="true"/>  
+							    	<% if (allSelectedPlayers.length >0){ 
+							    		%>	    	
+								    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+									    	<c:if test="${selected == entry.key}">	
+									     		<c:set var="valid" value="false"/> 	
+									     	</c:if>	
+								     	</c:forEach>
+							     	<% }%>
+							     	<c:if test="${valid == true}">
+								    	<option value="${entry.key}">${entry.value}</option>
+								    </c:if>     	
+							    </c:forEach>
+							</select>
+						</form>
+					</td>		    	
+		    	<%}
+		    	if (attack > 2) {
+				    String attackPositionThree = chosenAttack.get("three");
+				    if (attackPositionThree != null){ %>
+						<td>
+							<% out.print(attackPositionThree); %>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="remove attack"/>
+								<input type="hidden" name="position" value="three"/>
+								<input type="submit" value="remove"/>
+							</form>
+						</td>
+					<%
+					} else {%>
+			    		<td>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="add attack"/>
+								<input type="hidden" name="position" value="three"/>
+								<select name="footballer" onchange="this.form.submit()">		
+								    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"attack")}'> 
+								    	<c:set var="valid" value="true"/>  
+								    	<% if (allSelectedPlayers.length >0){ 
+								    		%>	    	
+									    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+										    	<c:if test="${selected == entry.key}">	
+										     		<c:set var="valid" value="false"/> 	
+										     	</c:if>	
+									     	</c:forEach>
+								     	<% }%>
+								     	<c:if test="${valid == true}">
+									    	<option value="${entry.key}">${entry.value}</option>
+									    </c:if>     	
+								    </c:forEach>
+								</select>
+							</form>
+						</td>		    	
+			    	<%}	    	
+		    	}
+		    	if (attack > 3) {
+		    		String attackPositionFour = chosenAttack.get("four");
+				    if (attackPositionFour != null){ %>
+						<td>
+							<% out.print(attackPositionFour); %>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="remove attack"/>
+								<input type="hidden" name="position" value="four"/>
+								<input type="submit" value="remove"/>
+							</form>
+						</td>
+					<%
+					} else {%>
+			    		<td>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="add attack"/>
+								<input type="hidden" name="position" value="four"/>
+								<select name="footballer" onchange="this.form.submit()">		
+								    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"attack")}'> 
+								    	<c:set var="valid" value="true"/>  
+								    	<% if (allSelectedPlayers.length >0){ 
+								    		%>	    	
+									    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+										    	<c:if test="${selected == entry.key}">	
+										     		<c:set var="valid" value="false"/> 	
+										     	</c:if>	
+									     	</c:forEach>
+								     	<% }%>
+								     	<c:if test="${valid == true}">
+									    	<option value="${entry.key}">${entry.value}</option>
+									    </c:if>     	
+								    </c:forEach>
+								</select>
+							</form>
+						</td>		    	
+			    	<%}
+		    	
+		    	}
+		    	if (attack > 4) {
+		    		String attackPositionFive = chosenAttack.get("five");
+				    if (attackPositionFive != null){ %>
+						<td>
+							<% out.print(attackPositionFive); %>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="remove attack"/>
+								<input type="hidden" name="position" value="five"/>
+								<input type="submit" value="remove"/>
+							</form>
+						</td>
+					<%
+					} else {%>
+			    		<td>
+							<form method=POST action=playerTable.jsp>
+								<input type="hidden" name="formName" value="add attack"/>
+								<input type="hidden" name="position" value="five"/>
+								<select name="footballer" onchange="this.form.submit()">		
+								    <c:forEach var="entry" items='${footballers.filterPlayers(teamID,"attack")}'> 
+								    	<c:set var="valid" value="true"/>  
+								    	<% if (allSelectedPlayers.length >0){ 
+								    		%>	    	
+									    	<c:forEach var="selected" items="${selectedTeam.getAllPlayers()}"> 
+										    	<c:if test="${selected == entry.key}">	
+										     		<c:set var="valid" value="false"/> 	
+										     	</c:if>	
+									     	</c:forEach>
+								     	<% }%>
+								     	<c:if test="${valid == true}">
+									    	<option value="${entry.key}">${entry.value}</option>
+									    </c:if>     	
+								    </c:forEach>
+								</select>
+							</form>
+						</td>		    	
+			    	<%}
+		    	
+		    	} %>
+			
 		<tr/>
 	</table>
 	
@@ -217,6 +704,17 @@ if(null == session.getAttribute("user")){
 <!-- 
 *************************************************PLAYER TABLE DIV***********************************
  -->
+ <% if (allSelectedPlayers.length == 11){ 
+ 		session.setAttribute("goalie",selectedTeam.getGoalie());
+ 		session.setAttribute("defense",selectedTeam.getDefense());
+ 		session.setAttribute("attack",selectedTeam.getAttack());
+ 		session.setAttribute("mid",selectedTeam.getMid());%>
+	 	
+	 	<h2><a href="CalculateTeam">Calculate Team Score</a></h2>
+	 	
+	<% }%>
+
+ 
 <div style="float: left; width: 100%;">	<!-- player table div -->
 	<% if (footballers.getPlayerInfoForTeam(teamID).size() >0){ %>
 	<h2>All Players On Team</h2>

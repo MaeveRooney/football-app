@@ -118,7 +118,6 @@ public class ListFootballers {
     }
     
     public List<HashMap<String,String>> getPlayerInfoForTeam(int teamID){
-    	System.out.print("getting team info for team id "+teamID);
     	List<HashMap<String, String>> list = new ArrayList<HashMap<String,String>>();
     	Statement stmt = null;
 		String searchQuery = "select * from footballers " +

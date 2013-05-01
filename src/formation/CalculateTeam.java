@@ -6,19 +6,18 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class ChooseTeamAndFormation
+ * Servlet implementation class CalculateTeam
  */
-@WebServlet("/ChooseFormation")
-public class ChooseFormation extends HttpServlet {
+@WebServlet("/CalculateTeam")
+public class CalculateTeam extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ChooseFormation() {
+    public CalculateTeam() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -34,23 +33,7 @@ public class ChooseFormation extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// get current session, or initialize one if none
-		HttpSession session = request.getSession(true);		
-		try
-		{
-			System.out.println("In the choose formation Servlet");
-			String formation = request.getParameter("formation");
-			String delims = "[,]";
-			String[] positions = formation.split(delims);
-			session.setAttribute("defense", Integer.parseInt(positions[0]));
-			session.setAttribute("mid", Integer.parseInt(positions[1]));
-			session.setAttribute("attack", Integer.parseInt(positions[2]));
-			response.sendRedirect("playerTable.jsp");
-
-		} catch (Throwable exc)
-		{
-			System.out.println(exc);
-		}
+		// TODO Auto-generated method stub
 	}
 
 }

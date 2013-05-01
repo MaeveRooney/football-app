@@ -2,6 +2,8 @@ package formation;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,12 +37,19 @@ public class SelectPlayers extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(true);	
 		int teamID = 0;
-		int defense = 0;
-		int mid = 0;
-		int attack = 0;
+		int defenseNumber = 0;
+		int midNumber = 0;
+		int attackNumber = 0;
 		String teamName = "";
 		response.setContentType("text/html");
 	    PrintWriter out = response.getWriter();
+	    ChangeFormation selectedTeam;
+	    if (null == session.getAttribute("selectedTeam")){
+	    	selectedTeam = new ChangeFormation();
+	    	session.setAttribute("selectedTeam", selectedTeam);
+	    } else {
+	    	selectedTeam = (ChangeFormation) session.getAttribute("selectedTeam");
+	    }
 		if(null == session.getAttribute("user")){   
 			session.setAttribute("flashMessage","mustlogin");
 			session.setAttribute("url","selectTeam.jsp");
@@ -65,39 +74,38 @@ public class SelectPlayers extends HttpServlet {
 				System.out.print("team Name is " + teamName);
 			}
 			if(null != session.getAttribute("defense")){ 
-				defense = (Integer) session.getAttribute("defense");
-				System.out.print("defense int is " + defense);
+				defenseNumber = (Integer) session.getAttribute("defense");
+				System.out.print("defense int is " + defenseNumber);
 			}
 			if(null != session.getAttribute("mid")){ 
-				mid = (Integer) session.getAttribute("mid");
-				System.out.print("mid int is " + mid);
+				midNumber = (Integer) session.getAttribute("mid");
+				System.out.print("mid int is " + midNumber);
 			} 
 			if(null != session.getAttribute("attack")){ 
-				attack = (Integer) session.getAttribute("attack");
-				System.out.print("attack int is " + attack);
+				attackNumber = (Integer) session.getAttribute("attack");
+				System.out.print("attack int is " + attackNumber);
 			} 
 		}
 		// titles and info about team
 	    out.println("<BODY>\n" +
 	                "<H1>Select Players For Team</H1>" +
 	                "<h2>Working With Team: "+teamName + "</h2>" +
-	                "<h3>Formation: defense-"+defense+", midfield-"+mid+", attack-"+attack+"</h3>" +
+	                "<h3>Formation: defense-"+defenseNumber+", midfield-"+midNumber+", attack-"+attackNumber+"</h3>" +
 	                "<h3><a href='selectTeam.jsp'>Select new team and/or formation</a></h3><hr>");
-	    
-	    ChangeFormation selectedTeam = new ChangeFormation();
+
 	    if (request.getParameterMap().containsKey("formName")) {
 			String formName = request.getParameter("formName");
 			String position = request.getParameter("position");
 			if (request.getParameterMap().containsKey("footballer")) {
 				String footballer = request.getParameter("footballer");
-				selectedTeam = new ChangeFormation(formName, position, footballer);
+				footballer = URLDecoder.decode(footballer, "UTF-8");
+				selectedTeam.addFootballer(formName, position, footballer);
 			} else {
-				selectedTeam = new ChangeFormation(formName, position);
-				
+				selectedTeam.removeFootballer(formName, position);				
 			}
-		}    
-	    ListFootballers footballers = new ListFootballers();
-	    selectedTeam.processRequest();
+		}
+	    	    
+	    ListFootballers footballers = new ListFootballers();	    
 		Map<String, String > goalieMap = footballers.filterPlayers(teamID,"goalie");
 		Map<String, String > defenseMap = footballers.filterPlayers(teamID,"defense");
 		Map<String, String > midMap = footballers.filterPlayers(teamID,"mid");
@@ -114,20 +122,61 @@ public class SelectPlayers extends HttpServlet {
 		Map<String, String> chosenGoalie = selectedTeam.getGoalie();
 		if (chosenGoalie.size() == 1){
 			String goalie = chosenGoalie.get("one");
-			String removeButton = "<form method=POST action=SelectPlayers>" +
+			String removeButton = "<form method=POST id='removegoalie' action=SelectPlayers>" +
 							"<input type='hidden' name='formName' value='remove goalie'/>" +
 							"<input type='hidden' name='position' value='one'/>" +
 							"<input type='submit' value='remove'/>"+
 							"</form>";
-			out.println("<td>"+goalie+removeButton+"</td>");
+			out.println("<td style='width:200px;'>"+goalie+removeButton+"</td>");
 		} else {
-			out.println("<td>" +
-			"<form method=POST action=SelectPlayers>" +
+			out.println("<td style='width:200px;'>" +
+			"<form method=POST id='addgoalie' action=SelectPlayers>" +
 				"<input type='hidden' name='formName' value='add goalie'/>" +
 				"<input type='hidden' name='position' value='one'/>" +
 				"<select name='footballer' onchange='this.form.submit()'>");
 			for (Map.Entry<String, String> entry : goalieMap.entrySet()){
-				String key = entry.getKey();
+				String key = URLEncoder.encode(entry.getKey(), "UTF-8");
+				String value = entry.getValue();
+				boolean valid = true;
+				if (allSelectedPlayers.length >0){
+					for (int i = 0; i < allSelectedPlayers.length; i++){
+						String player = allSelectedPlayers[i];
+						if (allSelectedPlayers[i].matches(key)){
+							valid = false;
+						}
+					}
+				}
+				if (valid){
+					out.println("<option value="+key+">"+value+"</option>");
+				}
+			}				   
+			out.println("</form></td>");
+		}
+		//End Goalie Row
+		out.println("</tr>");
+		
+		//Start Defense Row
+		out.println("<tr><th>Defense</th>" +
+							"<td>Defense Rating = defense + strength + speed</td>");
+				
+		Map<String, String> chosenDefense = selectedTeam.getDefense();
+		String defensePositionOne = chosenDefense.get("one");
+	    String defensePositionTwo = chosenDefense.get("two");
+		if (defensePositionOne != null){
+			String removeButton = "<form method=POST id='removedefense1' action=SelectPlayers>" +
+							"<input type='hidden' name='formName' value='remove defense'/>" +
+							"<input type='hidden' name='position' value='one'/>" +
+							"<input type='submit' value='remove'/>"+
+							"</form>";
+			out.println("<td style='width:200px;'>"+defensePositionOne+removeButton+"</td>");
+		} else {
+			out.println("<td style='width:200px;'>" +
+			"<form method=POST id='adddefense1' action=SelectPlayers>" +
+				"<input type='hidden' name='formName' value='add defense'/>" +
+				"<input type='hidden' name='position' value='one'/>" +
+				"<select name='footballer' onchange='this.form.submit()'>");
+			for (Map.Entry<String, String> entry : defenseMap.entrySet()){
+				String key = URLEncoder.encode(entry.getKey(), "UTF-8");
 				String value = entry.getValue();
 				boolean valid = true;
 				if (allSelectedPlayers.length >0){
@@ -143,8 +192,143 @@ public class SelectPlayers extends HttpServlet {
 			}				   
 			out.println("</form></td>");
 		}
-		//End Goalie Row
+		 
+		if (defensePositionTwo != null){
+			String removeButton = "<form method=POST id='removedefense2' action=SelectPlayers>" +
+							"<input type='hidden' name='formName' value='remove defense'/>" +
+							"<input type='hidden' name='position' value='two'/>" +
+							"<input type='submit' value='remove'/>"+
+							"</form>";
+			out.println("<td style='width:200px;'>"+defensePositionTwo+removeButton+"</td>");
+		} else {
+			out.println("<td style='width:200px;'>" +
+			"<form method=POST id='adddefense2' action=SelectPlayers>" +
+				"<input type='hidden' name='formName' value='add defense'/>" +
+				"<input type='hidden' name='position' value='two'/>" +
+				"<select name='footballer' onchange='this.form.submit()'>");
+			for (Map.Entry<String, String> entry : defenseMap.entrySet()){
+				String key = URLEncoder.encode(entry.getKey(), "UTF-8");
+				String value = entry.getValue();
+				boolean valid = true;
+				if (allSelectedPlayers.length >0){
+					for (int i = 0; i < allSelectedPlayers.length; i++){					
+						if (allSelectedPlayers[i].matches(key)){
+							valid = false;
+						}
+					}
+				}
+				if (valid){
+					out.println("<option value="+key+">"+value+"</option>");
+				}
+			}				   
+			out.println("</form></td>");
+		} 
+		
+		if (defenseNumber > 2) {
+			String positionThree = chosenDefense.get("three");
+			if (positionThree != null){
+				String removeButton = "<form method=POST id='removedefense3' action=SelectPlayers>" +
+								"<input type='hidden' name='formName' value='remove defense'/>" +
+								"<input type='hidden' name='position' value='three'/>" +
+								"<input type='submit' value='remove'/>"+
+								"</form>";
+				out.println("<td style='width:200px;'>"+positionThree+removeButton+"</td>");
+			} else {
+				out.println("<td style='width:200px;'>" +
+				"<form method=POST id='adddefense3' action=SelectPlayers>" +
+					"<input type='hidden' name='formName' value='add defense'/>" +
+					"<input type='hidden' name='position' value='three'/>" +
+					"<select name='footballer' onchange='this.form.submit()'>");
+				for (Map.Entry<String, String> entry : defenseMap.entrySet()){
+					String key = URLEncoder.encode(entry.getKey(), "UTF-8");
+					String value = entry.getValue();
+					boolean valid = true;
+					if (allSelectedPlayers.length >0){
+						for (int i = 0; i < allSelectedPlayers.length; i++){					
+							if (allSelectedPlayers[i].matches(key)){
+								valid = false;
+							}
+						}
+					}
+					if (valid){
+						out.println("<option value="+key+">"+value+"</option>");
+					}
+				}				   
+				out.println("</form></td>");			
+			}
+		}
+		
+		if (defenseNumber > 3) {
+			String positionFour = chosenDefense.get("four");
+			if (positionFour != null){
+				String removeButton = "<form method=POST id='removedefense4' action=SelectPlayers>" +
+								"<input type='hidden' name='formName' value='remove defense'/>" +
+								"<input type='hidden' name='position' value='four'/>" +
+								"<input type='submit' value='remove'/>"+
+								"</form>";
+				out.println("<td style='width:200px;'>"+positionFour+removeButton+"</td>");
+			} else {
+				out.println("<td style='width:200px;'>" +
+				"<form method=POST id='adddefense4' action=SelectPlayers>" +
+					"<input type='hidden' name='formName' value='add defense'/>" +
+					"<input type='hidden' name='position' value='four'/>" +
+					"<select name='footballer' onchange='this.form.submit()'>");
+				for (Map.Entry<String, String> entry : defenseMap.entrySet()){
+					String key = URLEncoder.encode(entry.getKey(), "UTF-8");
+					String value = entry.getValue();
+					boolean valid = true;
+					if (allSelectedPlayers.length >0){
+						for (int i = 0; i < allSelectedPlayers.length; i++){					
+							if (allSelectedPlayers[i].matches(key)){
+								valid = false;
+							}
+						}
+					}
+					if (valid){
+						out.println("<option value="+key+">"+value+"</option>");
+					}
+				}				   
+				out.println("</form></td>");
+			}
+		} 
+		
+		if (defenseNumber > 4) {
+			String positionFive = chosenDefense.get("five");
+			if (positionFive != null){
+				String removeButton = "<form method=POST id='removedefense5' action=SelectPlayers>" +
+								"<input type='hidden' name='formName' value='remove defense'/>" +
+								"<input type='hidden' name='position' value='five'/>" +
+								"<input type='submit' value='remove'/>"+
+								"</form>";
+				out.println("<td style='width:200px;'>"+positionFive+removeButton+"</td>");
+			} else {
+				out.println("<td style='width:200px;'>" +
+				"<form method=POST id='adddefense5' action=SelectPlayers>" +
+					"<input type='hidden' name='formName' value='add defense'/>" +
+					"<input type='hidden' name='position' value='five'/>" +
+					"<select name='footballer' onchange='this.form.submit()'>");
+				for (Map.Entry<String, String> entry : defenseMap.entrySet()){
+					String key = URLEncoder.encode(entry.getKey(), "UTF-8");
+					String value = entry.getValue();
+					boolean valid = true;
+					if (allSelectedPlayers.length >0){
+						for (int i = 0; i < allSelectedPlayers.length; i++){					
+							if (allSelectedPlayers[i].matches(key)){
+								valid = false;
+							}
+						}
+					}
+					if (valid){
+						out.println("<option value="+key+">"+value+"</option>");
+					}
+				}				   
+				out.println("</form></td>");
+			}
+		}
+		//End defense Row
 		out.println("</tr>");
+		
+		
 		// List All players on team and their traits
 		if (footballers.getPlayerInfoForTeam(teamID).size() >0){ 
 			out.println("<h2>All Players On Team</h2>" +
@@ -176,6 +360,7 @@ public class SelectPlayers extends HttpServlet {
 		} else {
 			out.println("<h2>No players on team. Please add some so you can work on formations</h2>");
 		}
+		session.setAttribute("selectedTeam", selectedTeam);
 		
 	}
 
