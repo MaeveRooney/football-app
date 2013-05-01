@@ -1,51 +1,66 @@
 package formation;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.Vector;
 import org.apache.commons.lang3.*;
 
-public class changeFormation {
+public class ChangeFormation {
 	Map<String, String> defenseMap = new HashMap<String, String>();
-    Vector<String> defenseVector = new Vector<String>();
-    Vector<String> midVector = new Vector<String>();
-    Vector<String> attackVector = new Vector<String>();
-    Vector<String> goalieVector = new Vector<String>();
+	Map<String, String> midMap = new HashMap<String, String>();
+	Map<String, String> attackMap = new HashMap<String, String>();
+	Map<String, String> goalieMap = new HashMap<String, String>();
     String submit = null;
     String footballer = null;
     String formName = null;
     String position = null;
+    
+    public ChangeFormation(String formName, String position, String footballer){
+    	this.footballer = footballer;
+    	this.formName = formName;
+    	this.position = position;
+    }
+    
+    public ChangeFormation(){
+    }
+    
+    public ChangeFormation(String formName, String position){
+    	this.position = position;
+    	this.formName = formName;
+    }
 
-    private void addDefense(String position, String name) {
-        defenseMap.put(position, name);
+    private void addDefense(String pos, String name) {
+        defenseMap.put(pos, name);
     }
 
     private void removeDefense(String pos) {
         defenseMap.remove(pos);
     }
     
-    private void addMid(String name) {
-        midVector.addElement(name);
+    private void addMid(String pos, String name) {
+    	midMap.put(pos, name);
     }
 
-    private void removeMid(String name) {
-        midVector.removeElement(name);
+    private void removeMid(String pos) {
+    	midMap.remove(pos);
     }
     
-    private void addAttack(String name) {
-        attackVector.addElement(name);
+    private void addAttack(String pos, String name) {
+        attackMap.put(pos, name);
     }
 
-    private void removeAttack(String name) {
-        attackVector.removeElement(name);
+    private void removeAttack(String pos) {
+        attackMap.remove(pos);
     }
     
-    private void addGoalie(String name) {
-    	goalieVector.addElement(name);
+    private void addGoalie(String pos, String name) {
+    	goalieMap.put(pos, name);
     }
 
-    private void removeGoalie(String name) {
-        goalieVector.removeElement(name);
+    private void removeGoalie(String pos) {
+        goalieMap.remove(pos);
     }
     
     public void setFootballer(String name) {
@@ -60,41 +75,47 @@ public class changeFormation {
     	formName = name;
     }
 
-    public void setSubmit(String s) {
-        submit = s;
-    }
-
     public Map<String, String> getDefense() {
         return defenseMap;
     }
 
-    public String[] getMid() {
-        String[] s = new String[midVector.size()];
-        midVector.copyInto(s);
-        return s;
+    public Map<String, String> getMid() {
+        return midMap;
     }
     
-    public String[] getAttack() {
-        String[] s = new String[attackVector.size()];
-        attackVector.copyInto(s);
-        return s;
+    public Map<String, String> getAttack() {
+        return attackMap;
     }
     
-    public String[] getGoalie() {
-        String[] s = new String[goalieVector.size()];
-        goalieVector.copyInto(s);
-        return s;
+    public Map<String, String> getGoalie() {
+        return goalieMap;
     }
     
-    public Map<String, String> getAllPlayers() {
-    	String[] goalie = getGoalie();
-    	//String[] defense = getDefense();
-    	String[] mid = getMid();
-    	String[] attack = getAttack();
-    	//String[] both = ArrayUtils.addAll(goalie, defense);
+    public String[] getAllPlayers() {
+    	String[] goalie = new String[getGoalie().size()];
+    	for (int i=0; i < getGoalie().size(); i++) {
+    		String value = (String)getGoalie().values().toArray()[i];
+    		goalie[i] = value;
+    	}
+    	String[] defense = new String[getDefense().size()];
+    	for (int i=0; i < getDefense().size(); i++) {
+    		String value = (String)getDefense().values().toArray()[i];
+    		defense[i] = value;
+    	}
+    	String[] mid = new String[getMid().size()];
+    	for (int i=0; i < getMid().size(); i++) {
+    		String value = (String)getMid().values().toArray()[i];
+    		mid[i] = value;
+    	}
+    	String[] attack = new String[getAttack().size()];
+    	for (int i=0; i < getAttack().size(); i++) {
+    		String value = (String)getAttack().values().toArray()[i];
+    		attack[i] = value;
+    	}
+    	String[] both = ArrayUtils.addAll(goalie, defense);
     	String[] both2 = ArrayUtils.addAll(mid, attack);
-    	//String[] all = ArrayUtils.addAll(both, both2);
-        return defenseMap;
+    	String[] all = ArrayUtils.addAll(both, both2);
+        return all;
     }
     
     public void processRequest() {
@@ -103,30 +124,31 @@ public class changeFormation {
         // "add" or "remove"
     	if (footballer != null){
 	        if (formName.equals("add defense"))
-	            addDefense(position, footballer);
-	        else if (formName.equals("remove defense"))
-	            removeDefense(footballer);
+	            addDefense(position, footballer);	        
 	        else if (formName.equals("add midfield"))
-	            addMid(footballer);
-	        else if (formName.equals("remove midfield"))
-	            removeMid(footballer);
+	            addMid(position, footballer);
 	        else if (formName.equals("add attack"))
-	            addAttack(footballer);
-	        else if (formName.equals("remove attack"))
-	            removeAttack(footballer);
+	            addAttack(position, footballer);        
 	        else if (formName.equals("add goalie"))
-	            addGoalie(footballer);
-	        else if (formName.equals("remove goalie"))
-	            removeGoalie(footballer);
+	            addGoalie(position, footballer);	        
 	        // reset at the end of the request
+    	} else if (position != null){
+    		if (formName.equals("remove goalie"))
+	            removeGoalie(position);
+    		else if (formName.equals("remove attack"))
+	            removeAttack(position);
+    		else if (formName.equals("remove defense"))
+	            removeDefense(position);
+	        else if (formName.equals("remove midfield"))
+	            removeMid(position);    		
     	}
-        //reset();
+        reset();
     }
 
     // reset
     private void reset() {
     	formName = null;
-        submit = null;
         footballer = null;
+        position = null;
     }
 }

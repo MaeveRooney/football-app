@@ -18,12 +18,8 @@ if(null == session.getAttribute("user")){
 	String fullname = (String) session.getAttribute("name");
 	out.print("<p>You are logged in as " + fullname + "</p>");
 }
-if(null != session.getAttribute("flashMessage")){   
-	String strFlash = (String) session.getAttribute("flashMessage");
-	if (strFlash.equals("mustSelectTeam")){
-		out.print("<h2>You must select a team and formation to try out team formations</h2>");
-	}
-}
+
+
 %>
 <h3>Team: <% out.print(session.getAttribute("teamName")); %></h3>
 <h2>Choose Formation</h2>

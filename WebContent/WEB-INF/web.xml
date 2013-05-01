@@ -72,4 +72,12 @@
     <servlet-name>ChooseFormation</servlet-name>
     <url-pattern>/ChooseFormation</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>SelectPlayers</servlet-name>
+    <servlet-class>formation.SelectPlayers</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SelectPlayers</servlet-name>
+    <url-pattern>/SelectPlayers</url-pattern>
+  </servlet-mapping>
 </web-app>

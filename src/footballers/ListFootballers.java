@@ -42,19 +42,41 @@ public class ListFootballers {
 		return map;
     }
     
-    public Map<Integer, String> filterPlayers(int teamID){
+    public Map<String, String> filterPlayers(int teamID, String position){
     	Statement stmt = null;
-		String searchQuery;
+		String searchQuery = null;
 		if (teamID == 0){
 			searchQuery = "Select * from footballers where id not in (Select distinct playerID from team_players)";
+		} else {
+			if (position.matches("goalie")) {
+				searchQuery = "select id, full_name, goals, strength, speed from footballers " +
+							"inner join team_players " +
+							"on footballers.id=team_players.playerID " +
+							"where team_players.teamID="+teamID;
+			} else if (position.matches("defense")) {
+				searchQuery = "select id, full_name, defense, strength, speed from footballers " +
+						"inner join team_players " +
+						"on footballers.id=team_players.playerID " +
+						"where team_players.teamID="+teamID;
+			} else if (position.matches("mid")) {
+				searchQuery = "select id, full_name, passing, strength, speed from footballers " +
+						"inner join team_players " +
+						"on footballers.id=team_players.playerID " +
+						"where team_players.teamID="+teamID;
+			} else if (position.matches("attack")) {
+				searchQuery = "select id, full_name, scoring, strength, speed from footballers " +
+						"inner join team_players " +
+						"on footballers.id=team_players.playerID " +
+						"where team_players.teamID="+teamID;
+			}
+			else {
+				searchQuery = "select id, full_name from footballers " +
+						"inner join team_players " +
+						"on footballers.id=team_players.playerID " +
+						"where team_players.teamID="+teamID;
+			}
 		}
-		else {
-			searchQuery = "select * from footballers " +
-					"inner join team_players " +
-					"on footballers.id=team_players.playerID " +
-					"where team_players.teamID="+teamID;
-		}
-		Map<Integer, String> map = new HashMap<Integer, String>();
+		Map<String, String> map = new HashMap<String, String>();
 
 		try
 		{
@@ -63,9 +85,27 @@ public class ListFootballers {
 			stmt=currentCon.createStatement();
 			rs = stmt.executeQuery(searchQuery);
 			if (rs.isBeforeFirst() ) { 
-				map.put(0, "");
+				map.put("", "");
 				while(rs.next()){
-					map.put(new Integer(rs.getInt("id")), rs.getString("full_name"));
+					if (position.matches("defense")){
+						int sum = rs.getInt("defense") + rs.getInt("speed") + rs.getInt("strength");
+						String value = rs.getString("full_name") + " | " + sum + "/30";
+						map.put(rs.getString("full_name"), value);
+					} else if (position.matches("goalie")) { 
+						int sum = rs.getInt("goals") + rs.getInt("speed") + rs.getInt("strength");
+						String value = rs.getString("full_name") + " | " + sum + "/30";
+						map.put(rs.getString("full_name"), value);
+					} else if (position.matches("mid")) {
+						int sum = rs.getInt("passing") + rs.getInt("speed") + rs.getInt("strength");
+						String value = rs.getString("full_name") + " | " + sum + "/30";
+						map.put(rs.getString("full_name"), value);
+					} else if (position.matches("attack")) {
+						int sum = rs.getInt("scoring") + rs.getInt("speed") + rs.getInt("strength");
+						String value = rs.getString("full_name") + " | " + sum + "/30";
+						map.put(rs.getString("full_name"), value);
+					} else {
+						map.put(rs.getString("full_name"), rs.getString("full_name"));
+					}
 				}
 			}
 		}
@@ -84,7 +124,7 @@ public class ListFootballers {
 		String searchQuery = "select * from footballers " +
 					"inner join team_players " +
 					"on footballers.id=team_players.playerID " +
-					"where team_players.teamID="+teamID;		
+					"where team_players.teamID="+teamID;			
 		try
 		{
 			//connecting to the DB
