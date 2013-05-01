@@ -10,6 +10,10 @@
 <body>
 <c:remove var="selectedTeam" scope="session"/>
 <%
+if(null!= session.getAttribute("completeTeam")){
+	session.removeAttribute("completeTeam");
+	session.removeAttribute("selectedTeam");
+}
 if(null == session.getAttribute("user")){   
 	session.setAttribute("flashMessage","mustlogin");
 	session.setAttribute("url","selectTeam.jsp");

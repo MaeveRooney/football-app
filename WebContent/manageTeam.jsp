@@ -84,7 +84,7 @@ if(null == session.getAttribute("user")){
 			    if (chosenGoalie.size() == 1){ %>
 					<td>
 						<% out.print(chosenGoalie.get("one")); %>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="remove goalie"/>
 							<input type="hidden" name="position" value="one"/>
 							<input type="submit" value="remove"/>
@@ -93,7 +93,7 @@ if(null == session.getAttribute("user")){
 			<%
 				} else {%>
 		    		<td>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="add goalie"/>
 							<input type="hidden" name="position" value="one"/>
 							<select name="footballer" onchange="this.form.submit()">		
@@ -131,7 +131,7 @@ if(null == session.getAttribute("user")){
 			    if (defensePositionOne != null){ %>
 					<td>
 						<% out.print(defensePositionOne); %>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="remove defense"/>
 							<input type="hidden" name="position" value="one"/>
 							<input type="submit" value="remove"/>
@@ -140,7 +140,7 @@ if(null == session.getAttribute("user")){
 			<%
 				} else {%>
 		    		<td>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="add defense"/>
 							<input type="hidden" name="position" value="one"/>
 							<select name="footballer" onchange="this.form.submit()">		
@@ -165,7 +165,7 @@ if(null == session.getAttribute("user")){
 			    if (defensePositionTwo != null){ %>
 					<td>
 						<% out.print(defensePositionTwo); %>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="remove defense"/>
 							<input type="hidden" name="position" value="two"/>
 							<input type="submit" value="remove"/>
@@ -175,7 +175,7 @@ if(null == session.getAttribute("user")){
 			<%
 				} else {%>
 		    		<td>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="add defense"/>
 							<input type="hidden" name="position" value="two"/>
 							<select name="footballer" onchange="this.form.submit()">		
@@ -202,7 +202,7 @@ if(null == session.getAttribute("user")){
 				    if (defensePositionThree != null){ %>
 						<td>
 							<% out.print(defensePositionThree); %>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="remove defense"/>
 								<input type="hidden" name="position" value="three"/>
 								<input type="submit" value="remove"/>
@@ -211,7 +211,7 @@ if(null == session.getAttribute("user")){
 					<%
 					} else {%>
 			    		<td>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="add defense"/>
 								<input type="hidden" name="position" value="three"/>
 								<select name="footballer" onchange="this.form.submit()">		
@@ -239,7 +239,7 @@ if(null == session.getAttribute("user")){
 				    if (defensePositionFour != null){ %>
 						<td>
 							<% out.print(defensePositionFour); %>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="remove defense"/>
 								<input type="hidden" name="position" value="four"/>
 								<input type="submit" value="remove"/>
@@ -248,7 +248,7 @@ if(null == session.getAttribute("user")){
 					<%
 					} else {%>
 			    		<td>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="add defense"/>
 								<input type="hidden" name="position" value="four"/>
 								<select name="footballer" onchange="this.form.submit()">		
@@ -277,7 +277,7 @@ if(null == session.getAttribute("user")){
 				    if (defensePositionFive != null){ %>
 						<td>
 							<% out.print(defensePositionFive); %>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="remove defense"/>
 								<input type="hidden" name="position" value="five"/>
 								<input type="submit" value="remove"/>
@@ -286,7 +286,7 @@ if(null == session.getAttribute("user")){
 					<%
 					} else {%>
 			    		<td>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="add defense"/>
 								<input type="hidden" name="position" value="five"/>
 								<select name="footballer" onchange="this.form.submit()">		
@@ -324,7 +324,7 @@ if(null == session.getAttribute("user")){
 			    if (midPositionOne != null){ %>
 					<td>
 						<% out.print(midPositionOne); %>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="remove mid"/>
 							<input type="hidden" name="position" value="one"/>
 							<input type="submit" value="remove"/>
@@ -333,7 +333,7 @@ if(null == session.getAttribute("user")){
 			<%
 				} else {%>
 		    		<td>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="add mid"/>
 							<input type="hidden" name="position" value="one"/>
 							<select name="footballer" onchange="this.form.submit()">		
@@ -358,7 +358,7 @@ if(null == session.getAttribute("user")){
 			    if (midPositionTwo != null){ %>
 					<td>
 						<% out.print(midPositionTwo); %>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="remove mid"/>
 							<input type="hidden" name="position" value="two"/>
 							<input type="submit" value="remove"/>
@@ -368,7 +368,7 @@ if(null == session.getAttribute("user")){
 			<%
 				} else {%>
 		    		<td>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="add mid"/>
 							<input type="hidden" name="position" value="two"/>
 							<select name="footballer" onchange="this.form.submit()">		
@@ -395,7 +395,7 @@ if(null == session.getAttribute("user")){
 				    if (midPositionThree != null){ %>
 						<td>
 							<% out.print(midPositionThree); %>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="remove mid"/>
 								<input type="hidden" name="position" value="three"/>
 								<input type="submit" value="remove"/>
@@ -404,7 +404,7 @@ if(null == session.getAttribute("user")){
 					<%
 					} else {%>
 			    		<td>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="add mid"/>
 								<input type="hidden" name="position" value="three"/>
 								<select name="footballer" onchange="this.form.submit()">		
@@ -432,7 +432,7 @@ if(null == session.getAttribute("user")){
 				    if (midPositionFour != null){ %>
 						<td>
 							<% out.print(midPositionFour); %>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="remove mid"/>
 								<input type="hidden" name="position" value="four"/>
 								<input type="submit" value="remove"/>
@@ -441,7 +441,7 @@ if(null == session.getAttribute("user")){
 					<%
 					} else {%>
 			    		<td>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="add mid"/>
 								<input type="hidden" name="position" value="four"/>
 								<select name="footballer" onchange="this.form.submit()">		
@@ -470,7 +470,7 @@ if(null == session.getAttribute("user")){
 				    if (midPositionFive != null){ %>
 						<td>
 							<% out.print(midPositionFive); %>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="remove mid"/>
 								<input type="hidden" name="position" value="five"/>
 								<input type="submit" value="remove"/>
@@ -479,7 +479,7 @@ if(null == session.getAttribute("user")){
 					<%
 					} else {%>
 			    		<td>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="add mid"/>
 								<input type="hidden" name="position" value="five"/>
 								<select name="footballer" onchange="this.form.submit()">		
@@ -514,10 +514,10 @@ if(null == session.getAttribute("user")){
 			    Map<String, String> chosenAttack = selectedTeam.getAttack();
 			    String attackPositionOne = chosenAttack.get("one");
 			    String attackPositionTwo = chosenAttack.get("two");
-			    if (defensePositionOne != null){ %>
+			    if (attackPositionOne != null){ %>
 					<td>
 						<% out.print(attackPositionOne); %>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="remove attack"/>
 							<input type="hidden" name="position" value="one"/>
 							<input type="submit" value="remove"/>
@@ -526,7 +526,7 @@ if(null == session.getAttribute("user")){
 			<%
 				} else {%>
 		    		<td>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="add attack"/>
 							<input type="hidden" name="position" value="one"/>
 							<select name="footballer" onchange="this.form.submit()">		
@@ -551,7 +551,7 @@ if(null == session.getAttribute("user")){
 			    if (attackPositionTwo != null){ %>
 					<td>
 						<% out.print(attackPositionTwo); %>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="remove attack"/>
 							<input type="hidden" name="position" value="two"/>
 							<input type="submit" value="remove"/>
@@ -561,7 +561,7 @@ if(null == session.getAttribute("user")){
 			<%
 				} else {%>
 		    		<td>
-						<form method=POST action=playerTable.jsp>
+						<form method=POST action=manageTeam.jsp>
 							<input type="hidden" name="formName" value="add attack"/>
 							<input type="hidden" name="position" value="two"/>
 							<select name="footballer" onchange="this.form.submit()">		
@@ -588,7 +588,7 @@ if(null == session.getAttribute("user")){
 				    if (attackPositionThree != null){ %>
 						<td>
 							<% out.print(attackPositionThree); %>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="remove attack"/>
 								<input type="hidden" name="position" value="three"/>
 								<input type="submit" value="remove"/>
@@ -597,7 +597,7 @@ if(null == session.getAttribute("user")){
 					<%
 					} else {%>
 			    		<td>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="add attack"/>
 								<input type="hidden" name="position" value="three"/>
 								<select name="footballer" onchange="this.form.submit()">		
@@ -625,7 +625,7 @@ if(null == session.getAttribute("user")){
 				    if (attackPositionFour != null){ %>
 						<td>
 							<% out.print(attackPositionFour); %>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="remove attack"/>
 								<input type="hidden" name="position" value="four"/>
 								<input type="submit" value="remove"/>
@@ -634,7 +634,7 @@ if(null == session.getAttribute("user")){
 					<%
 					} else {%>
 			    		<td>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="add attack"/>
 								<input type="hidden" name="position" value="four"/>
 								<select name="footballer" onchange="this.form.submit()">		
@@ -663,7 +663,7 @@ if(null == session.getAttribute("user")){
 				    if (attackPositionFive != null){ %>
 						<td>
 							<% out.print(attackPositionFive); %>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="remove attack"/>
 								<input type="hidden" name="position" value="five"/>
 								<input type="submit" value="remove"/>
@@ -672,7 +672,7 @@ if(null == session.getAttribute("user")){
 					<%
 					} else {%>
 			    		<td>
-							<form method=POST action=playerTable.jsp>
+							<form method=POST action=manageTeam.jsp>
 								<input type="hidden" name="formName" value="add attack"/>
 								<input type="hidden" name="position" value="five"/>
 								<select name="footballer" onchange="this.form.submit()">		
@@ -704,13 +704,13 @@ if(null == session.getAttribute("user")){
 <!-- 
 *************************************************PLAYER TABLE DIV***********************************
  -->
- <% if (allSelectedPlayers.length == 11){ 
- 		session.setAttribute("goalie",selectedTeam.getGoalie());
- 		session.setAttribute("defense",selectedTeam.getDefense());
- 		session.setAttribute("attack",selectedTeam.getAttack());
- 		session.setAttribute("mid",selectedTeam.getMid());%>
+ <% if (allSelectedPlayers.length == 11){
+ 	session.setAttribute("completeTeam","yes");%>
 	 	
 	 	<h2><a href="CalculateTeam">Calculate Team Score</a></h2>
+	 	
+	<% } else{
+ 	session.setAttribute("completeTeam","no");%>
 	 	
 	<% }%>
 

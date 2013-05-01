@@ -152,5 +152,113 @@ public class ListFootballers {
 		
 		return list;
     }
+
+    public int GetGoalieScore(int teamID, String playerName){
+    	Statement stmt = null;
+		String searchQuery = "select * from footballers " +
+					"inner join team_players " +
+					"on footballers.id=team_players.playerID " +
+					"where team_players.teamID="+teamID +
+					" and footballers.full_name='"+playerName+"'";			
+		try
+		{
+			//connecting to the DB
+			currentCon = ConnectionManager.getConnection();
+			stmt=currentCon.createStatement();
+			rs = stmt.executeQuery(searchQuery);
+			if (rs.isBeforeFirst() ) { 
+				while(rs.next()){
+					int sum = rs.getInt("goals") + rs.getInt("speed") + rs.getInt("strength");
+					return sum;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			System.out.println("Log In failed: An Exception has occurred! " + ex);
+		} 
+		return 0;
+    }
+    
+    public int GetDefenseScore(int teamID, String playerName){
+    	Statement stmt = null;
+		String searchQuery = "select * from footballers " +
+					"inner join team_players " +
+					"on footballers.id=team_players.playerID " +
+					"where team_players.teamID="+teamID +
+					" and footballers.full_name='"+playerName+"'";			
+		try
+		{
+			//connecting to the DB
+			currentCon = ConnectionManager.getConnection();
+			stmt=currentCon.createStatement();
+			rs = stmt.executeQuery(searchQuery);
+			if (rs.isBeforeFirst() ) { 
+				while(rs.next()){
+					int sum = rs.getInt("defense") + rs.getInt("speed") + rs.getInt("strength");
+					return sum;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			System.out.println("Log In failed: An Exception has occurred! " + ex);
+		} 
+		return 0;
+    }
+    
+    public int GetMidScore(int teamID, String playerName){
+    	Statement stmt = null;
+		String searchQuery = "select * from footballers " +
+					"inner join team_players " +
+					"on footballers.id=team_players.playerID " +
+					"where team_players.teamID="+teamID +
+					" and footballers.full_name='"+playerName+"'";			
+		try
+		{
+			//connecting to the DB
+			currentCon = ConnectionManager.getConnection();
+			stmt=currentCon.createStatement();
+			rs = stmt.executeQuery(searchQuery);
+			if (rs.isBeforeFirst() ) { 
+				while(rs.next()){
+					int sum = rs.getInt("passing") + rs.getInt("speed") + rs.getInt("strength");
+					return sum;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			System.out.println("Log In failed: An Exception has occurred! " + ex);
+		} 
+		return 0;
+    }
+    
+    public int GetAttackScore(int teamID, String playerName){
+    	Statement stmt = null;
+		String searchQuery = "select * from footballers " +
+					"inner join team_players " +
+					"on footballers.id=team_players.playerID " +
+					"where team_players.teamID="+teamID +
+					" and footballers.full_name='"+playerName+"'";			
+		try
+		{
+			//connecting to the DB
+			currentCon = ConnectionManager.getConnection();
+			stmt=currentCon.createStatement();
+			rs = stmt.executeQuery(searchQuery);
+			if (rs.isBeforeFirst() ) { 
+				while(rs.next()){
+					int sum = rs.getInt("scoring") + rs.getInt("speed") + rs.getInt("strength");
+					return sum;
+				}
+			}
+		}
+		catch (Exception ex)
+		{
+			System.out.println("Log In failed: An Exception has occurred! " + ex);
+		} 
+		return 0;
+    }
     
 }

@@ -2,11 +2,8 @@ package formation;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.Vector;
 import org.apache.commons.lang3.*;
 
 public class ChangeFormation {
@@ -137,7 +134,10 @@ public class ChangeFormation {
 		            addGoalie(position, footballer);	        
 		        // reset at the end of the request
 	    	}
-    	} if (footballer == null && position != null){
+    	} 
+    	if (position != null){
+    		System.out.print(" form is "+ formName+"\r\n");
+    		System.out.print(" position is "+ position+"\r\n");
     		if (formName.equals("remove goalie"))
 	            removeGoalie(position);
     		else if (formName.equals("remove attack"))

@@ -45,7 +45,7 @@ public class ChooseFormation extends HttpServlet {
 			session.setAttribute("defense", Integer.parseInt(positions[0]));
 			session.setAttribute("mid", Integer.parseInt(positions[1]));
 			session.setAttribute("attack", Integer.parseInt(positions[2]));
-			response.sendRedirect("playerTable.jsp");
+			response.sendRedirect("manageTeam.jsp");
 
 		} catch (Throwable exc)
 		{
